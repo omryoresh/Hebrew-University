@@ -1,0 +1,94 @@
+---
+title: "Problem Set 1"
+author: "Omry Yoresh"
+date: "2023-04-11"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# About the course:
+* *Q1*: ML tools have shown some incredible successes over the last decade in multiple areas. The ML field tackled both novel problems like: Image Processing, Voice Recognition, User Recommendation, Natural Language Processing - and more classic problems like classification and regression problems. Why can’t we simply apply those methods to economic issues - policy problems, for examples?
+
+* *A1*: We cannot simply apply those ML tools to economic issues, for example to analyse effectiveness of policy, since it includes several of main differences. First, the economic context requires understanding the whole context of an issue, which requires assumptions that is not simply a result of having the data. This refers to which variables are of interest, which are good controls and why, etc. Another point, which is inherently connected to the last point I made is causality. When we have a question of causal effect, we cannot simply look at the data and draw conclusions -- we need to ask questions on the design. What analysis will enable us to obtain the causal effect of the policy? This question requires a complete understanding of the context in which the question is asked, and afterwards creatively building a structure where we can compare the policy to a ``counter factual''.
+
+* *Q2*: Linear Regression model doesn’t in itself implies causality. What else needed in order to use the regression coefficients as causal? Why is it not quite easy to get in ML?
+
+* *A2*: I guess I answered this question in part in question 1, but this is the main point differentiating ML and econometrics. When we ask the question of causality we want to isolate the effect of a variable (say policy) but we need to assess make sure that there are no confounders in the process, where ML looks at the data and tries to explain it and learn from it. We want when running a regressions to construct, in some creative way, the ability to compare groups that are comparable and also inhibit external validity.
+
+* *Q3*: Due to convenience economists mostly use linear models. Since we are going to use other structural forms let’s discuss those assumptions explicitly. This will give us better understanding of the difference between models.
+
+  * *Q3a*: What is the intuitive meaning of the linearity assumption?
+  
+  * *A3a*: The intuitive meaning of this assumption is that the independent variables effect the dependent variable with a linear coefficient. 
+
+  * *Q3b*: What is the intuitive meaning of the separability assumption?
+  
+  * *A3b*: The separability assumption is that data points can be clearly divided into groups that are distinct in their values.
+  
+  * *Q3c*: What is the encapsulated meanings in X∼N(μ,σ2)?
+  
+  * *A3c*: I guess this refers to the normality assumption (it was asked under the linear regression intro), that is used sometimes in linear regressions to preform hypothesis testing. Basically it assumes that given dependent and independent fixed points the error term is normally distributed with mu (which is all given in the constant), and a variation of sigma square.
+  
+# R and RStudio
+Done!
+
+# The “Tidyverse”
+
+Run the following only to install the packages if needed:
+```{r, warning=FALSE, message=FALSE}
+# install.packages(c("tidyverse", "kableExtra", "datasets"))
+```
+
+Load the packages:
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(kableExtra)
+library(datasets)
+```
+
+Loading the iris data set:
+```{r, warning=FALSE, message=FALSE}
+data(iris)
+```
+
+Manipulate the data:
+```{r, warning=FALSE, message=FALSE}
+iris %>%
+  select(c("Sepal.Length", "Sepal.Width", "Species")) %>%
+  group_by(Species) %>%
+  summarise(Average_Sepal_Length = mean(Sepal.Length)) %>%
+  kable() %>%
+  kable_styling()
+```
+
+Loading the mtcars data set:
+```{r, warning=FALSE, message=FALSE}
+data(mtcars)
+```
+
+Plot the Miles per Gallon (mpg) as a function of Horse Power (hp) and add a trend line differentiating by the number of cylinders (cyl):
+```{r, warning=FALSE, message=FALSE}
+ggplot(mtcars, aes(hp, mpg, color = as.factor(cyl))) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+# Git & GitHub
+Install and load the relevant package:
+```{r, warning=FALSE, message=FALSE}
+# install.packages("usethis")
+library(usethis)
+```
+
+```{r, warning=FALSE, message=FALSE}
+use_git_config(
+  scope = "project",
+  user.name = "Omry",
+  user.email = "omryoresh@gmail.com"
+)
+```
+
+
