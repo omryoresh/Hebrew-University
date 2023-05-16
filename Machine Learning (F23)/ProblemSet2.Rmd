@@ -1,0 +1,226 @@
+---
+title: "Problem Set 2"
+author: "Omry Yoresh"
+date: "2023-05-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load the packages:
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(kableExtra)
+library(datasets)
+library(DataExplorer)
+library(tidymodels)
+library(rsample)
+library(skimr)
+library(fixest)
+library(GGally)
+library(broom)
+```
+
+Setting the seed:
+```{r}
+set.seed(100)
+```
+
+
+
+# Exercises:
+
+* *Q1*: Can we use the data for prediction without assumptions? Why?
+* *A1*: Yes, we don't need any assumption, since our interest is in predicting values of a variable of interest (dependent) and not deriving any claim on the causal effect of any one of the co-variate.
+
+* Separability
+
+* *Q2*: What is the downside in adding interactions? (Hint: think about the ratio n/k, where n is the number of observations and k is the number of co-variates)
+* *A2*: The downside of adding interactions is that more complexity is integrated into the model. The complexity of the model will lead to over fitting of the data and although it's more accurate, the less we will be able to gain from it.
+
+* Normal Distribution of E(u|X)
+
+* *Q3*: Why is those assumptions strong? Can you come up with a story that wouldn’t fit?
+* *A3*: This assumption is strong, and mostly unrelevant to modern econometrics as you can overcome this assumptions in various ways and more importantly check if indeed that is the case of the error terms. Main findings and stories in which this condition isn't met is when the error term is actually skewed, which happens when dealing with variables as income or education as the dependent variable, which are skewed themselves.
+
+
+* *Q4*: The confidence intervals of the β are derived from those assumptions. Explain how the confidence intervals derived from the assumptions (Intuitive explanation is enough).
+* *Q4*: In introductory to econometrics we used those assumptions in order to derive the confidence interval, as the confidence interval are calculated by relying on trying to rule out the H0 which is if the betas are different than zero -- the normality assumption, and in that equation it's also reliant on the beta being a constant number -- linearity.
+
+Loading the data:
+```{r}
+heart <- read_csv("data/ml4econ ex2 heart.csv")
+wine <- read_csv("data/ml4econ ex2 winequality_red.csv")
+```
+
+
+Plotting the histograms of every variable in the wine data:
+```{r}
+plot_histogram(wine)
+```
+
+
+
+Creating box-plots of every variable in the wine data against the quality of the wine:
+```{r}
+plot_boxplot(wine, by = "quality")
+```
+
+Splitting the data into 70% train and 30% test:
+```{r}
+wine_split <- wine %>% 
+  initial_split(prop=7/10, strata = quality)
+
+wine_train <- training(wine_split)
+wine_test  <- testing(wine_split)
+```
+
+Skimming the training data:
+```{r}
+wine_train %>% 
+  skim()
+```
+
+Fitting the linear model:
+```{r}
+lm_mod <- linear_reg()%>%
+  set_engine("lm")
+
+wine_train_fit <- lm_mod %>%
+  fit(quality ~ ., data = wine_train)
+
+wine_train_fit
+
+wine_test_pred <- wine_train_fit %>%
+  predict(new_data = wine_test) %>% 
+  bind_cols(wine_test) %>%
+  select(quality, .pred)
+
+head(wine_test_pred)
+```
+
+```{r}
+wine_test_pred %>%
+  rmse(quality, .pred)
+wine_test_pred %>%
+  rsq(quality, .pred)
+wine_test_pred %>%
+  mae(quality, .pred)
+```
+
+* *Q5*: Confidence intervals and t-test are essential parts of determining whether we estimated the “real” β or not. RMSE also helps to assert whether your model is correct or not. What is the main difference between these tests?
+* *A5*: The difference is that the latter tests are to determine the quality of prediction, calculating based on the predictions and the actual values.
+
+```{r}
+head(heart)
+```
+
+
+Plotting the histograms of every variable in the heart data:
+```{r}
+plot_histogram(heart)
+```
+
+* *Q6*: Can we use linear regression for binary outcomes? Why?
+* *A6*: We can, however, our results will not be bounded between 0 and 1, and so it may contradict the basic probability condition.
+
+Splitting the data into 70% train and 30% test:
+```{r}
+heart_split <- heart %>% 
+  initial_split(prop=7/10, strata = target)
+
+heart_train <- training(heart_split)
+heart_test  <- testing(heart_split)
+```
+
+
+Fitting the linear model :
+```{r}
+lm_mod <- linear_reg()%>%
+  set_engine("lm")
+
+heart_train_fit <- lm_mod %>%
+  fit(target ~ ., data = heart_train) 
+
+heart_train_fit
+
+heart_test_pred <- heart_train_fit %>%
+  predict(new_data = heart_test) %>% 
+  bind_cols(heart_test) %>%
+  select(target, .pred)
+
+heart_test_pred %>% 
+  summarise(
+    max = max(.pred, na.rm = T),
+    min = min(.pred, na.rm = T)
+)
+```
+
+* *Q7*: Is there any problem with these numbers?
+* *A7*: They aren't between [0,1].
+
+```{r}
+heart_test_pred %>%
+  mutate(
+    fitted = 1-.pred,
+    target = as.factor(target)
+         ) %>%
+  roc_curve(target, fitted) %>%
+  autoplot()
+```
+
+Fitting the logistic model :
+```{r}
+logit_mod <- glm(
+  target ~ .,
+  data = heart_train,
+  family = "binomial"
+)
+
+summary(logit_mod)
+
+heart_log_pred <-
+  logit_mod %>%
+  augment(
+    type.predict = "response",
+    newdata = heart_test
+    ) %>% 
+  select(target, .fitted)
+
+
+heart_log_pred %>% 
+  summarise(
+    max = max(.fitted, na.rm = T),
+    min = min(.fitted, na.rm = T)
+)
+```
+
+```{r}
+rule <- 0.8
+
+heart_log_pred_decision <- heart_log_pred %>%
+  mutate(
+    decision = if_else(.fitted < rule, "0", "1"),
+  ) 
+
+heart_log_pred_decision
+
+heart_conf_mat <-
+  heart_log_pred_decision %>%
+  mutate(
+    target = as.factor(target),
+    decision = as.factor(decision)
+  ) %>% 
+  conf_mat(target, decision)
+
+heart_conf_mat
+```
+
+```{r}
+heart_conf_mat%>%
+  summary() %>%
+  filter(.metric %in% c("accuracy", "sens", "spec"))
+```
+
