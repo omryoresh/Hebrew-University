@@ -21,6 +21,7 @@ library(skimr)
 library(fixest)
 library(GGally)
 library(broom)
+library(glmnet)
 ```
 
 Setting the seed:
@@ -71,7 +72,7 @@ plot_boxplot(wine, by = "quality")
 Splitting the data into 70% train and 30% test:
 ```{r}
 wine_split <- wine %>% 
-  initial_split(prop=7/10, strata = quality)
+  initial_split(prop=7/10)
 
 wine_train <- training(wine_split)
 wine_test  <- testing(wine_split)
@@ -129,7 +130,7 @@ plot_histogram(heart)
 Splitting the data into 70% train and 30% test:
 ```{r}
 heart_split <- heart %>% 
-  initial_split(prop=7/10, strata = target)
+  initial_split(prop=7/10)
 
 heart_train <- training(heart_split)
 heart_test  <- testing(heart_split)
@@ -224,3 +225,129 @@ heart_conf_mat%>%
   filter(.metric %in% c("accuracy", "sens", "spec"))
 ```
 
+Ridge:
+* *Q8*: Another version of regularized regression is the LASSO in which the penalty is in absolute term (in other context these regularizations also called L1 and L2 regularization after their norm term). Why it is necessary to use absolute or square term in the penalty?
+* *A8*: As in minimizing the mean square errors, we need to use the penalty in absolute or squared term because some coefficients can be negative and some positive and we wont want it to be canceled out.
+
+* *Q9*: One of the features of lasso is “Variable Selection” - some of the co-variates end up as zeros. This does not happen in Ridge. Why?
+* *A9*: As we saw in the lecture, the L1 penalty used in lasso encourages sparsity in the coefficients. It pushes the coefficients of less influential features towards zero. Ridge employs an L2 penalty doesn't always drive coefficients to exactly zero. Instead, it shrinks the coefficient values towards zero without entirely eliminating it. The reason for this stems from the shape of the regularization constrains, the L1 penalty is a diamond-shaped where the L2 is circular -- where the latter doesn't intersect with the axes.
+
+```{r}
+covariates <- heart_train %>% 
+  select(
+    -target
+  ) %>%
+  as.matrix()
+
+
+
+dependent <- heart_train %>% 
+  select(
+    target
+  ) %>%
+  as.matrix()
+
+fit_ridge <- glmnet(
+   x = covariates,
+   y = dependent,
+   alpha = 0
+ )
+
+ plot(fit_ridge, xvar = "lambda")
+```
+
+
+```{r}
+cv_ridge <- cv.glmnet(x = covariates, y = dependent)
+
+plot(cv_ridge)
+```
+
+```{r}
+# 1 se under for simplicity:
+heart_ridge_1se <- coef(cv_ridge, s = "lambda.1se")
+heart_ridge_1se
+
+# minimum:
+heart_ridge_min <- coef(cv_ridge, s = "lambda.min")
+heart_ridge_min
+
+```
+
+* *Q10*: What can be the problem in econometrics (as opposed to statistics) when a covariate equals zero? (We will come back to this question down the course road)
+* *A10*: The problem in econometrics can be that it will essentially drops variables in the regression. In an econometrics analysis we want to derive meaning to the coefficients and therefore need to extract the relevant variables to the analysis from the error terms to meet the conditions.
+
+
+```{r}
+
+covariates_test <- heart_test %>% 
+  select(
+    -target
+  ) %>%
+  as.matrix()
+  
+# 1 sd under:
+heart_ridge_pred_1se <- predict(
+  object = cv_ridge,
+  newx = covariates_test,
+  s = c("lambda.1se")
+) %>% 
+  bind_cols(heart_test) %>%
+  select(target, lambda.1se) %>% 
+  rename(pred = lambda.1se)
+
+heart_ridge_pred_1se_decision <- heart_ridge_pred_1se %>%
+  mutate(
+    decision = if_else(pred < rule, "0", "1"),
+  ) 
+
+heart_conf_mat_ridge_1se <-
+  heart_ridge_pred_1se_decision %>%
+  mutate(
+    target = as.factor(target),
+    decision = as.factor(decision)
+  ) %>% 
+  conf_mat(target, decision)
+
+# Minimum:
+heart_ridge_pred_min <- predict(
+  object = cv_ridge,
+  newx = covariates_test,
+  s = c("lambda.min")
+) %>% 
+  bind_cols(heart_test) %>%
+  select(target, lambda.min) %>% 
+  rename(pred = lambda.min)
+
+heart_ridge_pred_min_decision <- heart_ridge_pred_min %>%
+  mutate(
+    decision = if_else(pred < rule, "0", "1"),
+  ) 
+
+heart_conf_mat_ridge_min <-
+  heart_ridge_pred_min_decision %>%
+  mutate(
+    target = as.factor(target),
+    decision = as.factor(decision)
+  ) %>% 
+  conf_mat(target, decision)
+```
+
+
+```{r}
+# Confusion martix for the 1se under delta with ridge:
+heart_conf_mat_ridge_1se
+
+# Confusion martix for the min delta with ridge:
+heart_conf_mat_ridge_min
+
+# Efficiency measures for the min delta with ridge:
+heart_conf_mat_ridge_1se%>%
+  summary() %>%
+  filter(.metric %in% c("accuracy", "sens", "spec"))
+
+# Confusion martix for the 1se under with ridge:
+heart_conf_mat_ridge_min%>%
+  summary() %>%
+  filter(.metric %in% c("accuracy", "sens", "spec"))
+```
