@@ -1,0 +1,24 @@
+---
+title: "Kaggle Competition - Midterm - Machine Learning"
+author: "Eve Young & Omry Yoresh"
+date: "2023-05-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Set path and libraries: 
+```{r}
+library(tidyverse)
+PATH <- "/Users/omry/Documents/GitHub/Hebrew-University/Machine Learning (F23)"
+setwd(PATH)
+```
+
+Load data:
+```{r}
+train <- read_csv("55750-machine-learning-for-economists-huji-2023/train.csv")
+test <- read_csv("55750-machine-learning-for-economists-huji-2023/test.csv")
+```
+
