@@ -1,0 +1,398 @@
+---
+title: "Problem Set 3"
+author: "Omry Yoresh"
+date: "2023-06-01"
+output: html_document
+---
+
+```{r setup, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load libraries: 
+```{r, message=FALSE}
+library(tidyverse)
+library(magrittr)
+library(tidymodels)
+library(caret)
+library(DALEX)
+library(rpart)
+library(rattle)
+library(rpart.plot)
+library(RColorBrewer)
+library(ada)
+library(doParallel)
+library(pROC)
+```
+
+More setting:
+```{r, message=FALSE}
+cl <- makePSOCKcluster(5)
+registerDoParallel(cl)
+```
+
+Set path:
+```{r, message=FALSE}
+PATH <- "/Users/omry/Documents/GitHub/Hebrew-University/Machine Learning (F23)"
+setwd(PATH)
+```
+
+Setting the seed:
+```{r, message=FALSE}
+set.seed(167)
+```
+
+### Preface
+*Q.1*: Why we are not tuning parameters in OLS or Logistic Regression? How do we estimate these models?
+*A.1*: In OLS and logistic regressions we minimize the square errors and maximize the likelihood function respectively. We do this in order to find the optimum of these two objectives. In economics, we have interest in certain coefficients and therefore we do not tune the variable, because we have a particular parametric model in mind, and often units help us with interpretability. Variables have their own meaning, and we can't allow to throw out important variables if they are of importance to the structure of the estimation -- prime example of a problem that might arise is omitted variable bias. 
+
+*Q.2*: Can we infer causality from interpretability?
+*A.2*: No, but 'interpretability' is necessary in order to establish causality. We usually think of a story, a mechanism which is in play and after we make claims.
+
+Loading the data:
+```{r, message=FALSE}
+heart <- read_csv("data/ml4econ ex2 heart.csv") %>%
+    as_tibble() %>%
+  mutate(target = as.factor(target))
+
+wine <- read_csv("data/ml4econ ex2 winequality_red.csv")
+```
+
+Splitting the data into 70% train and 30% test:
+```{r, message=FALSE}
+wine_split <- wine %>% 
+  initial_split(prop=7/10)
+
+wine_train <- training(wine_split)
+wine_test  <- testing(wine_split)
+
+heart_split <- heart %>% 
+  initial_split(prop=7/10)
+
+heart_train <- training(heart_split)
+heart_test  <- testing(heart_split)
+```
+
+### Models
+**Trees:**
+
+*Q.3*: Why simple trees are considered as path dependent? Why simple trees suffer from over-fitting?
+*A.3*: Trees are considered path dependent because the "leafs" (the splits) occur within previous leafs and do not adjust previous decision ("greedy" algorithm). The reason that they suffer from over-fitting is because the choice of splits is based on minimizing the residual sum of square, which at the limits is extremely unique to the training data set.
+
+```{r, message=FALSE}
+formula_part <- target ~ sex + cp + chol
+formula_full <- target ~ .
+```
+
+```{r, message=FALSE}
+tree_fit <- rpart(
+  formula_part,
+  data = heart_train,
+  method = "class"
+)
+```
+
+```{r, message=FALSE}
+fancyRpartPlot(tree_fit, caption = NULL)
+```
+
+```{r, message=FALSE}
+model1 <- rpart(
+  formula_full,
+  data = heart_train,
+  method = "class",
+  control = rpart.control(minsplit = 2, minbucket = 1)
+)
+model2 <- rpart(
+  formula_full,
+  data = heart_train,
+  method = "class"
+)
+```
+
+```{r, message=FALSE}
+printcp(model1) # this model uses 12 different variables
+printcp(model2) # this model uses 8 different variables
+```
+
+**Generating predictions based on both models:**
+```{r, message=FALSE}
+pred_model1_train <- predict(model1, heart_train, type = "class")
+pred_model2_train <- predict(model2, heart_train, type = "class")
+pred_model1_test <- predict(model1, heart_test, type = "class")
+pred_model2_test <- predict(model2, heart_test, type = "class")
+```
+
+**Generating corresponding confusion matrices and summarizing their accuracy**
+```{r, message=FALSE}
+train_confmat1 <- bind_cols(heart_train$target, pred_model1_train) %>%
+  conf_mat(...1, ...2)
+
+train_confmat1 %>%
+  summary() %>%
+  filter(.metric %in% c("accuracy", "sens", "spec")) %>% 
+  mutate("1-.estimate" = 1 - .estimate)
+
+
+train_confmat2 <- bind_cols(heart_train$target, pred_model2_train) %>%
+  conf_mat(...1, ...2)
+
+train_confmat2 %>%
+  summary() %>%
+  filter(.metric %in% c("accuracy", "sens", "spec")) %>% 
+  mutate("1-.estimate" = 1 - .estimate)
+
+
+test_confmat1 <- bind_cols(heart_test$target, pred_model1_test) %>%
+  conf_mat(...1, ...2)
+
+test_confmat1 %>%
+  summary() %>%
+  filter(.metric %in% c("accuracy", "sens", "spec")) %>% 
+  mutate("1-.estimate" = 1 - .estimate)
+
+
+test_confmat2 <- bind_cols(heart_test$target, pred_model2_test) %>%
+  conf_mat(...1, ...2)
+
+test_confmat2 %>%
+  summary() %>%
+  filter(.metric %in% c("accuracy", "sens", "spec")) %>% 
+  mutate("1-.estimate" = 1 - .estimate)
+
+```
+We can see that the first model, which uses more variables predicts the training set better. This doesn't happen when trying to predict the test set! This is an example of the over-fit which can occur in these kind of models.
+
+**Pruning the tree and limiting it's complexity:**
+```{r, message=FALSE}
+model1_prune <- prune(model1, cp = 0.03)
+model2_prune <- prune(model2, cp = 0.03)
+```
+
+```{r, message=FALSE}
+rpart.plot(model1_prune)
+rpart.plot(model2_prune)
+```
+
+```{r, message=FALSE}
+# Model predictions in train and test sets
+pred_prune_train <- predict(model1_prune, heart_train, type = "class")
+pred_prune_test <- predict(model1_prune, heart_test, type = "class")
+```
+
+```{r, message=FALSE}
+train_confmat_prune <- bind_cols(heart_train$target, pred_prune_train) %>%
+  conf_mat(...1, ...2)
+
+train_confmat_prune %>%
+  summary() %>%
+  filter(.metric %in% c("accuracy", "sens", "spec")) %>% 
+  mutate("1-.estimate" = 1 - .estimate)
+
+
+test_confmat_prune <- bind_cols(heart_test$target, pred_prune_test) %>%
+  conf_mat(...1, ...2)
+
+test_confmat_prune %>%
+  summary() %>%
+  filter(.metric %in% c("accuracy", "sens", "spec")) %>% 
+  mutate("1-.estimate" = 1 - .estimate)
+```
+We see that the accuracy is closer between the training and test data-set, suggesting less over-fitting.
+ 
+### K-Nearest Neighbors (KNN)
+
+**Cross-Validation:**
+```{r, message=FALSE}
+fitControl <- trainControl(
+  method = "repeatedcv",
+  number = 5, #5-fold repeated cv
+  repeats = 3
+)
+```
+
+**Fitting a model:**
+```{r, message=FALSE, results='hide'}
+KNN <- train(
+  formula_full,
+  data = heart_train,
+  method = "knn",
+  trControl = fitControl
+)
+
+bagging <- train(
+  formula_full,
+  data = heart_train,
+  method = "ada",
+  trControl = fitControl
+)
+
+boosting <- train(
+  formula_full,
+  data = heart_train,
+  method = "gbm",
+  trControl = fitControl
+)
+
+random_forest <- train(
+  formula_full,
+  data = heart_train,
+  method = "rf",
+  trControl = fitControl
+)
+```
+
+```{r, message=FALSE}
+ggplot(KNN)
+ggplot(bagging)
+ggplot(boosting)
+ggplot(random_forest)
+```
+
+**User-Defined Grid:**
+```{r, results='hide', message=FALSE, warning=FALSE}
+boosting_grid <- expand.grid(
+  interaction.depth = c(1,5,9),
+  n.trees = (1:30)*50,
+  shrinkage = 0.1,
+  n.minobsinnode = 20
+)
+```
+
+```{r, results='hide', message=FALSE, warning=FALSE}
+new_boosting <- train(
+  formula_full,
+  data = heart_train,
+  method = "gbm",
+  trControl = fitControl,
+  tuneGrid = boosting_grid
+)
+```
+
+```{r, message=FALSE}
+gridExtra::grid.arrange(ggplot(new_boosting),ggplot(boosting), ncol = 2)
+```
+
+
+### Interpretability
+**Explain objects:**
+```{r, message=FALSE}
+KNN_explainer <- explain(
+  KNN,
+  label = "knn",
+  x = heart_train %>% select(-target),
+  y = as.numeric(as.character(heart_train$target))
+)
+
+bagging_explainer <- explain(
+  bagging,
+  label = "ada",
+  x = heart_train %>% select(-target),
+  y = as.numeric(as.character(heart_train$target))
+)
+
+boosting_explainer <- explain(
+  new_boosting,
+  label = "gbm",
+  x = heart_train %>% select(-target),
+  y = as.numeric(as.character(heart_train$target))
+)
+
+random_forest_explainer <- explain(
+  random_forest,
+  label = "rf",
+  x = heart_train %>% select(-target),
+  y = as.numeric(as.character(heart_train$target))
+)
+```
+
+**Model Performance:** 
+```{r, message=FALSE}
+KNN_mp <- model_performance(KNN_explainer)
+bagging_mp <- model_performance(bagging_explainer)
+boosting_mp <- model_performance(boosting_explainer)
+random_forest_mp <- model_performance(random_forest_explainer)
+```
+
+```{r, message=FALSE}
+line <- plot(KNN_mp, bagging_mp, boosting_mp, random_forest_mp)
+box <- plot(KNN_mp, bagging_mp, boosting_mp, random_forest_mp, geom = "boxplot")
+```
+
+```{r, message=FALSE}
+gridExtra::grid.arrange(line, box, ncol = 2)
+```
+The left graph shows the cumulative distribution of the residuals It describes the percent of the predictions that are above a each level from the actual value. The right graph describes the same data in a boxplot format.
+
+**Variable Importance:**
+```{r, message=FALSE}
+KNN_vip <- variable_importance(KNN_explainer)
+bagging_vip <- variable_importance(bagging_explainer)
+boosting_vip <- variable_importance(boosting_explainer)
+random_forest_vip <- variable_importance(random_forest_explainer)
+```
+
+```{r, message=FALSE}
+plot(KNN_vip, bagging_vip, boosting_vip, random_forest_vip)
+```
+The biggest bars corresponds with the most important variables, in terms of the models' ability to predict.
+
+**Partial Dependence:**
+```{r, message=FALSE}
+heart_row <- heart_train[1,]
+KNN_breakdown <- predict_parts_break_down(KNN_explainer, new_observation = heart_row)
+bagging_breakdown <- predict_parts_break_down(bagging_explainer, new_observation = heart_row)
+boosting_breakdown <- predict_parts_break_down(boosting_explainer, new_observation = heart_row)
+random_forest_breakdown <- predict_parts_break_down(random_forest_explainer, new_observation = heart_row)
+```
+
+```{r, message=FALSE}
+gridExtra::grid.arrange(
+  plot(KNN_breakdown),
+  plot(bagging_breakdown),
+  plot(boosting_breakdown),
+  plot(random_forest_breakdown),
+  ncol = 2
+)
+```
+
+**Predict:**
+```{r, message=FALSE}
+KNN_pred <- predict(KNN, newdata = heart_test)
+bagging_pred <- predict(bagging, newdata = heart_test)
+boosting_pred <- predict(boosting, newdata = heart_test)
+random_forest_pred <- predict(random_forest, newdata = heart_test)
+```
+
+**ROC:**
+```{r, message=FALSE}
+KNN_roc <- bind_cols(fct_rev(heart_test$target), as.numeric(KNN_pred)) %>%
+  roc_curve(...1, ...2) %>%
+  mutate(model = "knn")
+
+bagging_roc <- bind_cols(fct_rev(heart_test$target), as.numeric(bagging_pred)) %>%
+  roc_curve(...1, ...2) %>%
+  mutate(model = "ada")
+
+boosting_roc <- bind_cols(fct_rev(heart_test$target), as.numeric(boosting_pred)) %>%
+  roc_curve(...1, ...2) %>%
+  mutate(model = "gbm")
+
+random_forest_roc <- bind_cols(fct_rev(heart_test$target), as.numeric(random_forest_pred)) %>%
+  roc_curve(...1, ...2) %>%
+  mutate(model = "rf")
+```
+
+```{r, message=FALSE}
+rbind(KNN_roc, bagging_roc, boosting_roc, random_forest_roc) %>%
+  ggplot(aes(x = 1 - specificity, y = sensitivity, color = model)) +
+  geom_path() +
+  geom_abline(lty = 3)
+```
+
+```{r, message=FALSE}
+bind_cols(fct_rev(heart_test$target), as.numeric(boosting_pred)) %>%
+  roc_auc(...1, ...2)
+```
+
+The AUC of the boosting model is 0.85.

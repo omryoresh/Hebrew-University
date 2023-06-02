@@ -9,9 +9,12 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Set path and libraries: 
+Set path and load libraries: 
 ```{r}
 library(tidyverse)
+library(DataExplorer)
+library(skimr)
+
 PATH <- "/Users/omry/Documents/GitHub/Hebrew-University/Machine Learning (F23)"
 setwd(PATH)
 ```
@@ -22,3 +25,23 @@ train <- read_csv("55750-machine-learning-for-economists-huji-2023/train.csv")
 test <- read_csv("55750-machine-learning-for-economists-huji-2023/test.csv")
 ```
 
+Load data:
+```{r}
+plot_histogram(train)
+
+plot_boxplot(train, 
+             by = "")
+
+colnames(train)
+train %>% 
+  skim()
+```
+
+```{r}
+train <- traing %>%
+  mutate(
+    fxblack = female * black,
+    fxhisp = female * hisp,
+    
+  )
+```
