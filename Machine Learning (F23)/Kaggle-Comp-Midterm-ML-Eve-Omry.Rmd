@@ -5,43 +5,329 @@ date: "2023-05-30"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, messages=FALSE, warning=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 Set path and load libraries: 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(DataExplorer)
 library(skimr)
+library(rpart)
+library(ranger)
+library(tidymodels)
+library(vip)
+library(glmnet)
 
 PATH <- "/Users/omry/Documents/GitHub/Hebrew-University/Machine Learning (F23)"
 setwd(PATH)
 ```
 
 Load data:
-```{r}
-train <- read_csv("55750-machine-learning-for-economists-huji-2023/train.csv")
+```{r, message=FALSE, warning=FALSE}
+train <- read_csv("55750-machine-learning-for-economists-huji-2023/train.csv") %>%
+  as_tibble()
+
 test <- read_csv("55750-machine-learning-for-economists-huji-2023/test.csv")
 ```
 
-Load data:
-```{r}
-plot_histogram(train)
-
-plot_boxplot(train, 
-             by = "")
-
-colnames(train)
+Data Exploration:
+```{r, message=FALSE, warning=FALSE}
+#Here we number occupation categories in order to be able to look at the education and wage distributions within each occupation
 train %>% 
   skim()
+
+train <- train %>%
+  mutate(
+    occ_num = ifelse(train[,18] ==1, 1,
+                     ifelse(train[,19] ==1, 2,
+                            ifelse(train[,20] ==1, 3,
+                                   ifelse(train[,21] ==1, 4,
+                                          ifelse(train[,22] ==1, 5,
+                                                 ifelse(train[,23] ==1, 6,
+                                                        ifelse(train[,24] ==1, 7,
+                                                               ifelse(train[,25] ==1, 8,
+                                                                      ifelse(train[,26] ==1, 9,
+                                                                             ifelse(train[27] ==1, 10,
+                                                                                    ifelse(train[,28] ==1, 11,
+                                                                                           ifelse(train[,29] ==1, 12,
+                                                                                                  ifelse(train[,30] ==1, 13,
+                                                                                                         ifelse(train[,31] ==1, 14,
+                                                                                                                ifelse(train[,32] ==1, 15,
+                                                                                                                       ifelse(train[,33] ==1, 16,
+                                                                                                                              ifelse(train[,34] ==1, 17,
+                                                                                                                                     ifelse(train[,35] ==1, 18,
+                                                                                                                                            ifelse(train[,36] ==1, 19,
+                                                                                                                                                   ifelse(train[,37] ==1, 20, 21))))))))))))))))))))
+  )
 ```
 
-```{r}
-train <- traing %>%
+
+```{r, message=FALSE, warning=FALSE}
+#We now look at the mean and variance of wage and education within each occupation
+# First creating variance column separately
+sd1 <- train[,18:38] * train$lnwage
+sd1[sd1 == 0] = NA
+sd1 <- as.matrix(sapply(sd1, function(x) sd(x, na.rm = TRUE)))
+
+sd2 <- train[,18:38] * train$lnwage
+sd2[sd2 == 0] = NA
+sd2 <- as.matrix(sapply(sd2, function(x) sd(x, na.rm = TRUE)))
+
+
+
+# Now creating the rest and joining them
+by_occupation <- cbind(
+  as.matrix(train[,18:38] %>% sapply(function(x) sum(train$lnwage * x) / sum(x))),
+  as.matrix(train[,18:38] %>% sapply(function(x) sum(train$edyrs * x) / sum(x))),
+  sd1,
+  sd2,
+  as.matrix(train[,18:38] %>% sapply(function(x) sum(x)))
+)
+
+
+
+
+rm(sd1, sd2)
+colnames(by_occupation) <- c("m_wage", "m_ed", "sd_wage", "sd_educ", "n")
+```
+
+```{r, message=FALSE, warning=FALSE}
+# Looking at the distribution of the education years within occupations:
+train %>%
+  filter(occ_num <13) %>% #changing occupations
+  group_by(occ_num, edyrs) %>% #group
+  mutate(prop1 = n()) %>% #calculate proportion 
+  ungroup() %>%
+  group_by(occ_num) %>% #group
+  mutate(prop2 = n()) %>% #calculate proportion
+  ungroup() %>%
+  mutate(final_prop = prop1/ prop2) %>%
+  ggplot() +
+  geom_line(aes(x = edyrs, y = final_prop, color = factor(occ_num))) 
+```
+We now clean our data and create interactions that we suspect will be relevant. We also combine occupation groups into categories that we feel are better predictors of wage than the occupation division given in the data, or occupation categories with very few individuals. 
+
+We interact female with all occupation types because we believe that the impact of your gender on your wage varies by industry (for example, we anticipate a different impact in primarily female vs primarily male industries). We expect a similiar impact for education and so also create an interaction with female and education. We also create an interaction between race and female because we know from research on intersectionality that the impact of being female on your wage differs by your race.
+There is a great deal of variance in wage for managers and those in sales and science, when looking at the codebook, we can see that this may stem from the fact that these categories include employees from a wide variety of industries. To overcome some of the challenge this makes for prediction, we interact these categories with female (anticipating that a large amount of variance will come from gender). We also divide some of these categories into higher and lower education levels, due to the distribution of education in these fields.
+```{r, message=FALSE, warning=FALSE}
+#Creating interactions and grouping like-professions:
+train <- train %>%
+  select(-farmer, -occ_num) %>% # no farmers in train or test set
+  mutate(
+    business = ifelse((lawyerphysician==1 | financialop==1), 1, business),
+    prof = ifelse((computer == 1 | architect==1), 1, 0),
+    sciensocial = ifelse((scientist==1 | socialworker==1), 1, 0)    
+  ) %>%
   mutate(
     fxblack = female * black,
-    fxhisp = female * hisp,
-    
+    fxhisp = female * hisp, 
+    fxed = female*edyrs,
+    white = (1 - hisp - black),
+    edmanagers = manager * as.numeric(edyrs > 14),
+    edmanagersxf = edmanagers * female,
+    managerxf = manager * female,
+    salesxf = sales * female,
+    edsciensocial = sciensocial * as.numeric(edyrs > 16),
+    fxpart = expp * female,
+    collmanagers = manager * colldeg,
+    collsciensocial = sciensocial * colldeg
+  ) %>%
+  select(-lawyerphysician, -financialop, -computer, - architect, -scientist, -socialworker)
+
+test <- test %>%
+  select(-farmer) %>% # no farmers in train or test set
+  mutate(
+    business = ifelse((lawyerphysician==1 | financialop==1), 1, business),
+    prof = ifelse((computer == 1 | architect==1), 1, 0),
+    sciensocial = ifelse((scientist==1 | socialworker==1), 1, 0)    
+  ) %>%
+  mutate(
+    fxblack = female * black,
+    fxhisp = female * hisp, 
+    fxed = female*edyrs,
+    white = (1 - hisp - black),
+    edmanagers = manager * as.numeric(edyrs > 14),
+    edmanagersxf = edmanagers * female,
+    managerxf = manager * female,
+    salesxf = sales * female,
+    edsciensocial = sciensocial * as.numeric(edyrs > 16),
+    fxpart = expp * female,
+    collmanagers = manager * colldeg,
+    collsciensocial = sciensocial * colldeg
+  ) %>%
+  select(-lawyerphysician, -financialop, -computer, - architect, -scientist, -socialworker)
+```
+
+### Random Forest:
+We think that a good prediction method is likely to be the random forest because it allows for non-parametric predictions. Given the challenges involved in modeling wages, especially when looking at the impact of race and gender, we think that this non-parametric method may give us a benefit. We tried this both with and without our interacted variables.
+```{r, message=FALSE, warning=FALSE}
+#Setting seed:
+set.seed(42)
+
+random_forest_fit.woi <- ranger(
+  formula = lnwage ~ . -ID -fxblack -fxhisp -white -edmanagers -edmanagersxf -managerxf -salesxf -edsciensocial -fxpart -collmanagers -collsciensocial,
+  data = train,
+  num.trees = 1000,
+  importance = "impurity"
+)
+
+random_forest_fit.wi <- ranger(
+  formula = lnwage ~ . -ID,
+  data = train,
+  num.trees = 1000,
+  importance = "impurity"
+)
+```
+
+```{r, message=FALSE, warning=FALSE}
+# In sample predictions
+rf_train_pred.woi <- as_tibble(predict(random_forest_fit.woi, data = train)$predictions) %>%
+  rename(rf_train_pred = value) %>%
+  bind_cols(train) %>%
+  select(ID, lnwage, rf_train_pred) %>%
+  mutate(rf_sqerror = (lnwage - rf_train_pred)^2)
+
+rf_train_pred.wi <- as_tibble(predict(random_forest_fit.wi, data = train)$predictions) %>%
+  rename(rf_train_pred = value) %>%
+  bind_cols(train) %>%
+  select(ID, lnwage, rf_train_pred) %>%
+  mutate(rf_sqerror = (lnwage - rf_train_pred)^2)
+
+mean(rf_train_pred.woi$rf_sqerror)
+mean(rf_train_pred.wi$rf_sqerror)
+
+```
+
+VIP:
+```{r, message=FALSE, warning=FALSE}
+random_forest_fit.wi %>%
+  vip()
+
+random_forest_fit.woi %>%
+  vip()
+```
+```{r, message=FALSE, warning=FALSE}
+# Out of sample predictions
+rf_test_pred.woi <- as_tibble(predict(random_forest_fit.woi, data = test)$predictions) %>%
+  rename(rf_test_pred = value) %>%
+  bind_cols(test) %>%
+  select(ID, rf_test_pred)
+
+rf_test_pred.wi <- as_tibble(predict(random_forest_fit.wi, data = test)$predictions) %>%
+  rename(rf_test_pred = value) %>%
+  bind_cols(test) %>%
+  select(ID, rf_test_pred)
+```
+
+### Ridge:
+We also wanted to try prediction with ridge in order to compare the results to the random forest.
+```{r}
+covariates <- train %>% 
+  select(
+    -lnwage, -ID
+  ) %>%
+  as.matrix()
+
+dependent <- train %>% 
+  select(
+    lnwage, -ID
+  ) %>%
+  as.matrix()
+
+fit_ridge <- glmnet(
+   x = covariates,
+   y = dependent,
+   alpha = 0
+ )
+
+plot(fit_ridge, xvar = "lambda")
+```
+```{r, message=FALSE, warning=FALSE}
+cv_ridge <- cv.glmnet(x = covariates, y = dependent)
+
+plot(cv_ridge)
+```
+We tried using ridge for prediction both with one standard error and minimum in order to compare the results.
+```{r, message=FALSE, warning=FALSE}
+train_ridge_1se <- coef(cv_ridge, s = "lambda.1se")
+train_ridge_1se
+
+train_ridge_min <- coef(cv_ridge, s = "lambda.min")
+train_ridge_min
+```
+
+
+
+```{r, message=FALSE, warning=FALSE}
+test_wo_id <- test %>%
+  select(-ID) %>%
+  as.matrix()
+
+test_ridge_pred_1se <- predict(
+  object = cv_ridge,
+  newx = test_wo_id,
+  s = c("lambda.1se")
+) %>% 
+  bind_cols(test) %>%
+  select(ID, lambda.1se) %>% 
+  rename(ridge_test_pred = lambda.1se)
+
+test_ridge_pred_min <- predict(
+  object = cv_ridge,
+  newx = test_wo_id,
+  s = c("lambda.min")
+) %>% 
+  bind_cols(test) %>%
+  select(ID, lambda.min) %>% 
+  rename(ridge_test_pred = lambda.min)
+```
+
+
+
+```{r, message=FALSE, warning=FALSE}
+# Creating our submissions of the results:
+test_ridge_pred_1se <- test_ridge_pred_1se %>%
+  rename(
+    lnwage = ridge_test_pred
+  ) %>%
+  select(ID, lnwage)
+
+write.csv(test_ridge_pred_1se, "pred1_ridge1se.csv", row.names = F)
+
+test_ridge_pred_min <- test_ridge_pred_min %>%
+  rename(
+    lnwage = ridge_test_pred
+  ) %>%
+  select(ID, lnwage)
+
+write.csv(test_ridge_pred_min, "pred1_ridgemin.csv", row.names = F)
+
+rf_test_pred.wi <- rf_test_pred.wi %>%
+  rename(
+    lnwage = rf_test_pred
+  ) %>%
+  select(ID, lnwage)
+
+write.csv(rf_test_pred.wi, "pred1_rf_wi.csv", row.names = F)
+
+rf_test_pred.woi <- rf_test_pred.woi %>%
+  rename(
+    lnwage = rf_test_pred
+  ) %>%
+  select(ID, lnwage)
+
+write.csv(rf_test_pred.woi, "pred1_rf_woi.csv", row.names = F)
+
+
+rf_average <- left_join(test_ridge_pred_min %>% rename(lnwage1 = lnwage), rf_test_pred.wi %>% rename(lnwage2 = lnwage)) %>%
+  rowwise() %>%
+  mutate(pred = mean(c(lnwage1, lnwage2))) %>%
+  select(ID, pred) %>%
+  rename(
+    lnwage = pred
   )
+
+write.csv(rf_average, "pred1_average.csv", row.names = F)
 ```
