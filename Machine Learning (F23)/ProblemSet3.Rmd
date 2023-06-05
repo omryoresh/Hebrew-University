@@ -44,9 +44,11 @@ set.seed(167)
 
 ### Preface
 *Q.1*: Why we are not tuning parameters in OLS or Logistic Regression? How do we estimate these models?
+
 *A.1*: In OLS and logistic regressions we minimize the square errors and maximize the likelihood function respectively. We do this in order to find the optimum of these two objectives. In economics, we have interest in certain coefficients and therefore we do not tune the variable, because we have a particular parametric model in mind, and often units help us with interpretability. Variables have their own meaning, and we can't allow to throw out important variables if they are of importance to the structure of the estimation -- prime example of a problem that might arise is omitted variable bias. 
 
 *Q.2*: Can we infer causality from interpretability?
+
 *A.2*: No, but 'interpretability' is necessary in order to establish causality. We usually think of a story, a mechanism which is in play and after we make claims.
 
 Loading the data:
@@ -77,6 +79,7 @@ heart_test  <- testing(heart_split)
 **Trees:**
 
 *Q.3*: Why simple trees are considered as path dependent? Why simple trees suffer from over-fitting?
+
 *A.3*: Trees are considered path dependent because the "leafs" (the splits) occur within previous leafs and do not adjust previous decision ("greedy" algorithm). The reason that they suffer from over-fitting is because the choice of splits is based on minimizing the residual sum of square, which at the limits is extremely unique to the training data set.
 
 ```{r, message=FALSE}
@@ -338,6 +341,16 @@ plot(KNN_vip, bagging_vip, boosting_vip, random_forest_vip)
 The biggest bars corresponds with the most important variables, in terms of the models' ability to predict.
 
 **Partial Dependence:**
+```{r}
+KNN_ve <- model_profile(KNN_explainer)
+bagging_ve <- model_profile(bagging_explainer)
+boosting_ve <- model_profile(boosting_explainer)
+random_forest_ve <- model_profile(random_forest_explainer)
+
+plot(KNN_ve, bagging_ve, boosting_ve, random_forest_ve)
+```
+
+**Breakdown:**
 ```{r, message=FALSE}
 heart_row <- heart_train[1,]
 KNN_breakdown <- predict_parts_break_down(KNN_explainer, new_observation = heart_row)
@@ -395,4 +408,4 @@ bind_cols(fct_rev(heart_test$target), as.numeric(boosting_pred)) %>%
   roc_auc(...1, ...2)
 ```
 
-The AUC of the boosting model is 0.85.
+The area under the curve for the boosting model is 0.85.
