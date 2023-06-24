@@ -1,0 +1,226 @@
+country,source,year,Male,Female,ratio
+Aruba,PC - Population and Housing Census,1991,78.69,51.76,1.5202859350850078
+Afghanistan,PC - Population Census,1979,99.39,5.48,18.13686131386861
+Angola,PC - Population Census,1960,91.49,7.32,12.49863387978142
+Anguilla,PC - Population Census,1992,84.37,59.46,1.418937100571813
+Albania,LFS - Labour Force Survey,2002,75.4,50.44,1.4948453608247425
+Netherlands Antilles,PC - Population Census,1972,81.55,30.66,2.6598173515981736
+United Arab Emirates,PC - Population Census,1975,95.74,11.08,8.640794223826715
+Argentina,PC - Population Census,1960,85.36,19.12,4.464435146443514
+Armenia,LFS - Household Labour Force Survey,1997,81.5,62.64,1.3010855683269476
+American Samoa,PC - Population Census,1960,85.1,46.93,1.813339015555082
+Antigua and Barbuda,PC - Population Census,1970,93.93,41.01,2.2904169714703735
+Australia,PC - Population and Housing Census,1961,86.81,21.52,4.033921933085502
+Austria,PC - Population Census,1961,78.64,38.58,2.0383618455158112
+Azerbaijan,PC - Population Census,1999,79.32,59.45,1.3342304457527332
+Burundi,PC - Population Census,1979,94.34,93.17,1.0125576902436406
+Belgium,PC - Population Census,1947,81.16,19.4,4.1835051546391755
+Benin,OE - Official Estimates,1975,94.92,71.97,1.3188828678616091
+Burkina Faso,PC - Population Census,1985,93.63,74.62,1.2547574376842667
+Bangladesh,PC - Population Census,1961,95.37,18.59,5.1301775147929
+Bulgaria,PC - Population Census,1956,91.78,62.22,1.4750883960141434
+Bahrain,PC - Population Census,1971,92.25,6.1,15.122950819672132
+Bahamas,PC - Population Census,1963,93.67,52.22,1.793757181156645
+Bosnia and Herzegovina,HIES - Living Standards Survey,2001,60.28,29.56,2.0392422192151556
+Belarus,PC - Population Census,1989,81.88,62.78,1.3042370181586491
+Belize,PC - Population Census,1960,92.47,17.51,5.280982295830953
+Bermuda,PC - Census of Population & Housing,1970,92.54,59.97,1.5431048857762215
+Bolivia,PC - Population and Housing Census,1976,95.06,21.62,4.396854764107308
+Brazil,PC - Population Census,1960,92.09,16.11,5.716325263811298
+Barbados,PC - Population Census,1970,84.24,41.43,2.0333091962346126
+Brunei Darussalam,PC - Population Census,1960,93.57,20.42,4.582272282076395
+Bhutan,PC - Population Census,2005,80.7,51.28,1.5737129485179406
+Botswana,PC - Population Census,1981,86.77,40.91,2.120997311170863
+Central African Republic,PC - Population Census,1988,95.45,74.9,1.274365821094793
+Canada,PC - Population Census,1951,86.29,18.89,4.568025410269985
+Switzerland,PC - Population Census,1950,90.27,26.51,3.405130139569973
+Chile,PC - Population and Housing Census,1952,93.04,25.58,3.6372165754495707
+China,PC - Population Census,1982,88.57,64.76,1.367665225447807
+Côte d'Ivoire,PC - Population and Housing Census,1988,95.47,44.96,2.1234430604982206
+Cameroon,PC - Population Census,1976,90.75,52.11,1.7415083477259643
+"Congo, Democratic Republic of the",LFS - Survey on Employment and household's living conditions,1957,90.58,83.61,1.0833632340629111
+Congo,PC - Population Census,1974,95.22,63.45,1.500709219858156
+Cook Islands,PC - Population Census,1966,93.67,29.8,3.1432885906040267
+Colombia,PC - Population Census,1951,95.03,18,5.279444444444445
+Comoros,PC - Population Census,1980,92.99,28.7,3.24006968641115
+Cabo Verde,PC - Population Census,1980,80.87,20.26,3.991609081934847
+Costa Rica,PC - Population Census,1963,93.75,15.38,6.0955786736020805
+Cuba,PC - Population Census,1953,89.83,19.02,4.72292323869611
+Curaçao,LFS - Labour Force Survey,2018,65.66,56.03,1.1718722113153668
+Cayman Islands,PC - Population Census,1960,89.62,28.01,3.1995715815780077
+Cyprus,PC - Population Census,1960,94.74,40.32,2.349702380952381
+Czechia,PC - Population Census,1991,76.6,61.55,1.2445166531275385
+Germany,LFS - EU Labour Force Survey,1983,75.13,38.38,1.9575299635226677
+Djibouti,HS - Djiboutian Household Survey,2017,60.2,21.01,2.8653022370299857
+Dominica,PC - Population Census,1981,79.58,35.82,2.2216638749302065
+Denmark,PC - Population Census,1950,87.52,35.39,2.4730149759819158
+Dominican Republic,PC - Population Census,1960,95.51,11.3,8.45221238938053
+Algeria,PC - Population and Housing Census,1954,94.61,37.6,2.516223404255319
+Ecuador,PC - Population Census,1962,97.38,16.14,6.033457249070631
+Egypt,PC - Population Census,1960,93.75,4.27,21.955503512880565
+Spain,PC - Population Census,1950,93.53,13.54,6.90768094534712
+Estonia,PC - Population Census,1989,82.82,67.05,1.2351976137211036
+Ethiopia,PC - Population Census,1994,94.86,66.81,1.4198473282442747
+Finland,PC - Population Census,1960,88.4,48.06,1.8393674573449854
+Fiji,PC - Population Census,1956,92.35,4.81,19.1995841995842
+Falkland Islands (Malvinas),PC - Population Census,1991,85.38,54.4,1.569485294117647
+France,PC - Population Census,1962,81.51,34.4,2.3694767441860467
+Faeroe Islands,PC - Population Census,1960,89.44,16.01,5.586508432229856
+"Micronesia, Federated States of",HIES - Household Income and Expenditure Survey,2014,77.82,50.71,1.5346085584697298
+Gabon,PC - Population Census,1993,86.25,65.46,1.3175985334555456
+United Kingdom,PC - Population Census,1961,87.63,31.74,2.760869565217391
+Georgia,HS - Integrated Household Survey,1999,82.51,62.94,1.3109310454401017
+Guernsey,PC - Population Census,1996,77.52,53.78,1.4414280401636295
+Ghana,PC - Population Census,1960,94.37,58.41,1.615648005478514
+Gibraltar,PC - Population Census,1970,91.51,23.45,3.902345415778252
+Guinea,OE - Estimates based on Population Census,1983,87.54,45.86,1.908853030963803
+Guadeloupe,PC - Population Census in overseas territories,1967,81.65,37.84,2.15776955602537
+Gambia,PC - Population Census,1983,94.3,72.56,1.2996141124586549
+Guinea-Bissau,PC - Population Census,1950,94.15,94.36,0.9977744807121662
+Equatorial Guinea,PC - Population Census,1983,90.9,41.73,2.1782890007189075
+Greece,PC - Population Census,1951,88.19,13.42,6.571535022354694
+Grenada,LFS - Labour Force Survey,1988,73.93,55.54,1.3311127115592367
+Greenland,PC - Population Census,1960,89.69,19.03,4.713084603258014
+Guatemala,PC - Population Census,1964,94.62,12.02,7.871880199667222
+French Guiana,PC - Population Census in overseas territories,1961,82.79,39.8,2.0801507537688444
+Guam,PC - Population Census,1960,93.31,25.62,3.6420765027322406
+Guyana,PC - Population Census,1980,94.23,27.89,3.3786303334528505
+"Hong Kong, China",PC - Population Census,1961,94.92,33.95,2.7958762886597937
+Honduras,PC - Population Census,1974,92.01,15.75,5.841904761904762
+Croatia,PC - Population Census,1991,72.88,47.09,1.5476746655340834
+Haiti,PC - Population Census,1950,97.59,82.96,1.1763500482160079
+Hungary,PC - Population Census,1960,90.13,40.97,2.1999023675860383
+Indonesia,PC - Population Census,1961,93.57,32.05,2.919500780031201
+Isle of Man,PC - Population Census,1971,73.96,32.18,2.2983219390926037
+India,PC - Population Census,1971,92.79,19.45,4.7706940874036
+Ireland,PC - Population Census,1961,86.7,21.56,4.021335807050093
+"Iran, Islamic Republic of",PC - Population Census,1956,95.52,8.9,10.73258426966292
+Iraq,PC - Population Census,1957,92.67,3.06,30.284313725490197
+Iceland,PC - Population Census,1950,91.72,28.1,3.264056939501779
+Israel,PC - Population Census and Population Registers,1972,83.27,30.31,2.747278126031013
+Italy,PC - Population Census,1951,87.01,23.12,3.76340830449827
+Jamaica,PC - Population Census,1960,92.05,46.1,1.9967462039045552
+Jersey,PC - Jersey Census,1996,78.46,56.76,1.3823114869626496
+Jordan,PC - Population Census,1961,83.71,3.66,22.87158469945355
+Japan,PC - Population Census,1950,90.8,46.1,1.9696312364425161
+Kazakhstan,LFS - Sample Survey of Employment,2002,82.27,68.93,1.193529667778906
+Kenya,HS - Economic Survey,1986,95.8,63.6,1.5062893081761006
+Kyrgyzstan,PC - Population Census,1989,84.11,62.45,1.3468374699759806
+Cambodia,PC - Population Census,1962,93.26,54.87,1.6996537269910699
+Kiribati,PC - Population Census,1978,90.31,61.01,1.4802491394853303
+Saint Kitts and Nevis,PC - Population Census,1980,83.93,42.78,1.9618980832164563
+"Korea, Republic of",PC - Population Census,1960,85.59,27.92,3.0655444126074496
+Kosovo,HIES - Living Standards Survey,2000,69.59,31.92,2.180137844611529
+Kuwait,PC - Population Census,1965,94.59,9.64,9.812240663900415
+Lao People's Democratic Republic,PC - Population Census,1995,90.71,79.81,1.1365743641147725
+Lebanon,OE - Official Estimates,1975,85.53,13.21,6.474640423921271
+Liberia,PC - Population Census,1962,88.94,44.76,1.98704200178731
+Libya,PC - Population Census,1964,88.02,4.03,21.841191066997517
+Saint Lucia,LFS - Labour Force Survey,2003,79.26,64.2,1.2345794392523364
+Liechtenstein,PC - Population Census,1960,93.08,27.01,3.4461310625694184
+Sri Lanka,PC - Population Census,1953,92.14,31.2,2.9532051282051284
+Lesotho,LFS - Integrated Labour Force Survey,1997,77.5,62.2,1.2459807073954983
+Lithuania,PC - Population Census,1989,80.78,63.06,1.2810022201078337
+Luxembourg,PC - Population Census,1947,84.16,28.75,2.927304347826087
+Latvia,PC - Population Census,1989,82.61,65.7,1.2573820395738204
+"Macau, China",PC - Population Census,1960,70.08,18.58,3.7717976318622175
+Morocco,PC - Population Census,1960,91.5,8.87,10.31567080045096
+"Moldova, Republic of",OE - Estimates based on Population Census,1989,80.46,63.35,1.2700868192580899
+Madagascar,PC - Population Census,1975,96.48,76.21,1.2659755937541006
+Maldives,PC - Population Census,1977,93.11,65.98,1.4111852076386784
+Mexico,PC - Population Census,1960,96.46,20.71,4.657653307580878
+Marshall Islands,HIES - Household Income and Expenditure Survey,2019,72.06,32.69,2.204343836035485
+North Macedonia,PC - Population Census,1991,73.37,47.39,1.5482169234015617
+Mali,PC - Population and Housing Census,1976,94.25,16.06,5.868617683686177
+Malta,PC - Population Census,1957,83.06,13.29,6.2498118886380745
+Myanmar,PC - Population Census,1983,80.37,39.42,2.038812785388128
+Montenegro,LFS - Labour Force Survey,2007,66.5,47.2,1.4088983050847457
+Mongolia,OE - Official Estimates,1998,66.68,57.94,1.1508457024508114
+Northern Mariana Islands,LFS - Labour Force Survey,1985,76.34,45.04,1.6949378330373004
+Mozambique,PC - Population Census,1950,97.47,8.44,11.548578199052134
+Mauritania,OE - Official Estimates,1975,95.93,5.02,19.10956175298805
+Montserrat,PC - Population Census,1960,86.28,44.38,1.9441189725101395
+Martinique,PC - Population Census in overseas territories,1961,81.05,41.95,1.9320619785458877
+Mauritius,PC - Population Census,1952,90.44,23.43,3.860008536064874
+Malawi,PC - Population Census,1975,93.79,67.12,1.3973480333730632
+Malaysia,PC - Population and Housing Census,1980,88.84,38.69,2.296200568622383
+Namibia,PC - Population Census,1991,82.42,56.5,1.4587610619469027
+New Caledonia,PC - Population Census,2014,74.83,63.51,1.178239647299638
+Niger,PC - Population and Housing Census,1977,95.69,7.72,12.395077720207254
+Nigeria,PC - Population Census,1963,96.52,31.03,3.1105381888495
+Nicaragua,PC - Population Census,1963,94.93,22.19,4.278053177106805
+Niue,PC - Population Census,1986,79.22,34.08,2.324530516431925
+Netherlands,PC - Population Census,1960,84.39,13.86,6.088744588744589
+Norway,PC - Population Census,1946,89.1,22.15,4.022573363431151
+Nepal,PC - Population Census,1961,94.44,54.23,1.7414715102341878
+Nauru,PC - Population Census,1966,95.04,13.08,7.2660550458715605
+New Zealand,LFS - Household Labour Force Survey,1986,78.95,50.37,1.5674012308914038
+Oman,PC - General Census of Population Housing & Establishment,2003,89.15,25.55,3.489236790606654
+Pakistan,LFS - Labour Force Survey,1976,92.01,7.54,12.202917771883289
+Panama,PC - Population Census,1950,94.56,21.73,4.351587666820064
+Peru,PC - Population Census,1961,95.19,19.97,4.766649974962444
+Philippines,PC - Population Census,1960,90.09,26.61,3.3855693348365277
+Palau,PC - Population Census,1995,82.64,61.95,1.3339790153349476
+Papua New Guinea,PC - Population Census,1966,95.82,92.98,1.0305442030544203
+Poland,PC - Population Census,1950,93.23,56.95,1.6370500438981563
+Puerto Rico,PC - Population Census,1960,78.35,21.23,3.690532265661799
+Portugal,PC - Population Census,1950,90.41,18.31,4.937738940469689
+Paraguay,PC - Population Census,1962,95.45,23.54,4.054800339847069
+Occupied Palestinian Territory,LFS - Labour Force Survey,2000,77.72,15.53,5.0045074050225375
+French Polynesia,PC - Population Census,1962,91.16,28.83,3.1619840443981966
+Qatar,PC - Population and Housing Census,1986,98.29,35.67,2.7555368657134847
+Réunion,PC - Population Census in overseas territories,1961,84.1,18.39,4.573137574768896
+Romania,PC - Population Census,1956,94.11,67.99,1.3841741432563612
+Russian Federation,PC - Population Census,1989,82.63,62.66,1.3187041174593042
+Rwanda,PC - Population Census,1978,94.53,92.72,1.019521138912856
+Saudi Arabia,PC - Population Census,1992,90.71,18.62,4.8716433941997845
+Sudan,PC - Population and Housing Census,1973,94.73,23.49,4.0327799063431256
+Senegal,PC - Population Census,1988,89.81,25.52,3.5192006269592477
+Singapore,PC - Population Census,1957,93.23,20.88,4.465038314176246
+Saint Helena,PC - Population Census,1987,83.13,43.2,1.9243055555555553
+Solomon Islands,HIES - Household Income and Expenditure Survey,2013,94.31,88.85,1.061451885199775
+Sierra Leone,OE - Projections based on the Population and Housing Census,1963,89.3,45.89,1.945957724994552
+El Salvador,PC - Population Census,1961,95.66,17.53,5.4569309754706214
+San Marino,PC - Population Census,1976,82.63,35.84,2.3055245535714284
+Somalia,LFS - Labour Force Survey,2019,65.7,27.22,2.4136664217487143
+Serbia,LFS - Labour Force Survey,2006,63.15,44.44,1.4210171017101711
+South Sudan,PC - Population and Housing Census,2008,84.17,74.67,1.1272264631043256
+Sao Tome and Principe,PC - Population Census,1981,91.21,38.79,2.351379221448827
+Suriname,PC - Population Census,1964,74.12,20,3.7060000000000004
+Slovakia,PC - Labour costs,1991,76.61,60.38,1.2687976151043392
+Slovenia,PC - Population Census,1991,72,55.58,1.29543001079525
+Sweden,PC - Population Census,1965,79.97,34.66,2.3072706289671094
+Eswatini,PC - Population Census,1966,91.99,50.8,1.8108267716535433
+Seychelles,PC - Population Census,1960,87.2,52.66,1.6559058108621345
+Syrian Arab Republic,PC - Population Census,1960,87.09,6.65,13.096240601503759
+Turks and Caicos Islands,PC - Population Census,1960,94.14,47.5,1.9818947368421054
+Chad,PC - Population and Housing General Census,1980,95.84,25.47,3.7628582646250495
+Togo,OE - Official Estimates,1980,93.65,55.91,1.675013414416026
+Thailand,LFS - Labour Force Survey,1976,85.61,44.13,1.9399501472920915
+Tajikistan,HIES - Living Standards Survey,2003,77.36,47.81,1.61807153315206
+Tokelau,HIES - Household Income and Expenditure Survey,2016,96.1,72.53,1.3249689783537846
+Timor-Leste,HIES - Living Standards Survey,2001,89.83,40.28,2.2301390268123136
+Tonga,PC - Population Census,1966,94.04,4.86,19.349794238683128
+Trinidad and Tobago,PC - Population Census,1970,86.61,23.74,3.648272957034541
+Tunisia,PC - Population Census,1956,87.09,35.23,2.4720408742548967
+Türkiye,PC - Population Census,1955,97.11,71.23,1.3633300575600167
+Tuvalu,HIES - Household Income and Expenditure Survey,2016,78.51,42.64,1.8412288930581615
+"Taiwan, China",LFS - Labour Force Survey,1978,86.59,32.86,2.6351186853317103
+"Tanzania, United Republic of",PC - Population Census,1978,95.91,89.03,1.0772773222509266
+Uganda,LFS - National Labour Force Survey,2012,86.51,74.71,1.1579440503279348
+Ukraine,PC - Population Census,1979,76.14,56.62,1.3447545037089368
+Uruguay,PC - Population Census,1963,81.15,25.12,3.2304936305732483
+United States,LFS - Current Population Survey,1948,89.2,29.9,2.9832775919732444
+Uzbekistan,LFS - Labour Force Survey,2020,80.01,43.74,1.8292181069958848
+Saint Vincent and the Grenadines,PC - Population Census,1991,84.67,45.94,1.8430561602089683
+"Venezuela, Bolivarian Republic of",PC - Population Census,1961,95.41,19.54,4.8828045035823955
+British Virgin Islands,PC - Population Census,1970,91.94,37.51,2.4510797120767798
+United States Virgin Islands,PC - Population Census,1980,84.02,59.35,1.4156697556866047
+Viet Nam,PC - Population Census,1989,82.68,70.35,1.175266524520256
+Vanuatu,PC - Population and Housing Census,1979,96.86,81.94,1.1820844520380767
+Wallis and Futuna Islands,PC - Population Census,2018,54.2,39.58,1.369378473976756
+Samoa,PC - Population Census,1961,97.69,8.16,11.971813725490195
+Yemen,PC - Population Census,1994,88.22,17.57,5.021058622652248
+South Africa,PC - Population Census,1960,94.81,24.15,3.9258799171842655
+Zambia,PC - Population and Housing Census,1969,85.42,28.19,3.0301525363604114
+Zimbabwe,PC - Population Census,1982,89.53,47.66,1.8785144775493077
