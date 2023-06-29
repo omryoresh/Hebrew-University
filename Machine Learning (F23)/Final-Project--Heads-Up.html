@@ -1629,53 +1629,50 @@ display: none;
 
 <div id="introduction" class="section level1">
 <h1>1. Introduction:</h1>
-<p>Construction accidents pose a significant threat to worker safety,
+<p>Construction accidents posed a significant threat to worker safety,
 productivity, and the economy at large. Simultaneously, air pollution
 has emerged as a global concern, impacting various aspects of human
-life. Understanding the relationship between pollution and construction
-accidents is crucial for improving workplace safety and mitigating the
+life. Understanding the relationship between the two, stands as a
+crucial point in order to improve workplace safety and mitigating the
 adverse effects of pollution. This project aims to extend the main
 results of the paper “Heads Up: Does Pollution Cause Construction
 Accidents?” by Victor Lavy, Genia Rachkovsky, and myself, within the
 framework of the course “Machine Learning for Economists” at The Hebrew
 University of Jerusalem.</p>
-<p>The original study examined the potential impact of Nitrogen Dioxide
-(<span class="math inline">\(NO_2\)</span>) on construction site
-accidents. Building upon this research, the project leverages machine
-learning techniques and methodologies learned in the course to further
-explore and validate the findings. Machine learning offers unique
-advantages in uncovering complex data patterns, extracting meaningful
-insights, and improving predictive accuracy.</p>
-<p>To accomplish this, the project adopts a two-fold approach. Firstly,
-a double lasso methodology will be employed to validate the controls
-selected for analyzing the effect of <span class="math inline">\(NO_2\)</span>. Given the availability of multiple
-pollutants and weather variables, this analysis will identify the most
-influential factors associated with construction accidents. It will also
-potentially address concerns of co-determination of pollution in both
-time and space, enhancing the robustness of the original findings.</p>
+<p>The original study examined the impact of Nitrogen Dioxide (<span class="math inline">\(NO_2\)</span>) on construction accidents. Building
+upon this research, this project leverages machine learning techniques
+and methodologies learned in the course to further explore and validate
+the findings. To accomplish this, the project adopts a two-fold
+approach. First, a double lasso methodology is employed to validate the
+controls selected for analyzing the effect of <span class="math inline">\(NO_2\)</span>. The availability of multiple
+pollutants and weather variables, this analysis identifies the most
+influential factors associated with construction accidents, that are
+important for the estimation. It also potentially addresses concerns of
+co-determination of pollution in both time and space, enhancing the
+robustness of the original findings.</p>
 <p>Moreover, the project goes beyond replication and validation by
-incorporating a Ridge prediction model. This model will aim to assess
-the likelihood of a construction accident at a given construction site.
-A comparative analysis will be conducted to evaluate the accuracy of the
-model using same-day data versus lagged data. This analysis holds
-potential policy implications, as it can inform decisions regarding
-safety protocols. Understanding the predictive power of different time
-frames is crucial for effectively managing construction site safety and
-labor allocation.</p>
+incorporates a Ridge prediction model. This model aims to assess the
+likelihood of a construction accident at a given construction site. A
+comparative analysis was conducted to evaluate the accuracy of the model
+using same-day data versus lagged data. This analysis holds potential
+policy implications, as it could inform decisions regarding safety
+protocols. Understanding the predictive power of different time frames
+can also be crucial for effectively managing construction site safety
+and labor allocation.</p>
 <p>The project is organized as follows: Chapter 2 focuses on data
 replication to ensure consistency with the original study. Chapter 3
 employs the double lasso method to validate the chosen pollution
 variables and explore potential regressors. Chapter 4 compares and
 develops prediction models to assess the likelihood of construction
 accidents using both same-day and lagged data. Finally, Chapter 5
-summarizes the key findings, discusses their implications, and provides
+summarizes the key findings, discuses their implications, and provide
 recommendations for policymakers.</p>
 </div>
 <div id="data-replication" class="section level1">
-<h1>2. Data Replication:</h1>
+<h1>2. Data Replication</h1>
 <div id="data-preparation" class="section level3">
-<h3>2.1 Data Preparation:</h3>
-<p>The dataset used in this paper combines data from three primary
+<h3>2.1 Data Preparation</h3>
+<p>The dataset used in this paper combined data from three primary
 sources: the Israeli Ministry of Economy and Industry, which provided
 information on construction sites’ locations, activity dates, and
 construction accidents between 2017 and 2019; the Israeli Ministry of
@@ -1685,16 +1682,16 @@ organization focused on workers’ rights, which supplemented the
 construction site accident data.</p>
 </div>
 <div id="construction-sites" class="section level3">
-<h3>2.1.1 Construction Sites:</h3>
+<h3>2.1.1 Construction Sites</h3>
 <p>Initially, the Ministry of Economy and Industry provided a sample of
 25,571 active construction sites in Israel from 2017 to 2019. By
-applying geo-coding techniques, the sites’ addresses were matched to
+applying geocoding techniques, the sites’ addresses were matched to
 their respective coordinates. Each active day for each site was then
 assigned an observation, resulting in a final sample of 24,614 sites and
 10,016,000 observations.</p>
 </div>
 <div id="accidents" class="section level3">
-<h3>2.1.2 Accidents:</h3>
+<h3>2.1.2 Accidents</h3>
 <p>The accident sample provided by the Ministry of Economy and Industry
 included 1,316 accidents within the specified period. However, the
 accidents provided by Kav LaOved did not have site IDs that matched the
@@ -1705,9 +1702,9 @@ of 1,164 accidents were recorded per 10,016,000 working days in
 construction sites.</p>
 </div>
 <div id="environmental-data" class="section level3">
-<h3>2.1.3 Environmental Data:</h3>
+<h3>2.1.3 Environmental Data</h3>
 <p>Air pollution and weather data were obtained from the Israeli
-Ministry of Environmental Protection. The data included 8-hour average
+Ministry of Environmental Protection. The data includes 8-hour average
 measurements of various pollutants such as Nitrogen Dioxide (<span class="math inline">\(NO_2\)</span>), wind strength and direction,
 temperature, humidity, and other pollutants from 173 monitoring stations
 across Israel during the sample period. Each active day in a
@@ -1716,11 +1713,10 @@ with 7,199 construction sites having at least one monitoring station
 within a 1 km distance.</p>
 </div>
 <div id="summary-statistics" class="section level3">
-<h3>2.2 Summary Statistics:</h3>
-<p>Summary statistics were computed for the pollutants and weather
-variables. The following table (Table 1) presents the average rates and
-standard errors of the various pollutants and weather variables
-measured:</p>
+<h3>2.2 Summary Statistics</h3>
+<p>Summary statistics were computed for all the pollutants and weather
+variables in the data. The following table (Table 1) presents the
+average rates and standard errors of the various variables:</p>
 <p>Load libraries:</p>
 <pre class="r"><code>set.seed(42)
 if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)</code></pre>
@@ -2480,7 +2476,7 @@ p &lt;- grid.arrange(p1, p2, ncol = 1, nrow = 2, heights = c(4, 4))</code></pre>
 <h1>2.3 Econometric Framework and Main Analysis:</h1>
 <div id="econometric-framework" class="section level3">
 <h3>2.3.1 Econometric Framework:</h3>
-<p>The main analysis in this paper employs a linear probability fixed
+<p>The main analysis in this paper employed a linear probability fixed
 effects model to estimate the effect of <span class="math inline">\(\beta\)</span> in the following equation: <span class="math display">\[
   Y_{st} = \alpha + \beta NO_2+f(Temp_{st}, Wind_{st},
 Hum_{st})+S_s+DMY_t+\epsilon_{st} ,
@@ -2490,39 +2486,40 @@ variable <span class="math inline">\(Y_{st}\)</span> is a binary
 indicator that determines whether an accident occurred at construction
 site <span class="math inline">\(s\)</span> on day <span class="math inline">\(t\)</span>. The nitrogen dioxide level (<span class="math inline">\(NO_2\)</span>) measured in parts per billion
 (<span class="math inline">\(ppb\)</span>) at the monitoring station
-closest to the construction site between 8 am and 4 pm is included as a
-variable of interest. The equation also includes construction site fixed
-effects denoted as <span class="math inline">\(S_s\)</span> and time
-fixed effects denoted as <span class="math inline">\(DMY_t\)</span> (day
-of the week, month, and year). The weather variables, <span class="math inline">\(f(Temp_{st}, Wind_{st}, Hum_{st})\)</span>,
-represent temperature, wind speed, and humidity levels, respectively,
+closest to the construction site between 8 am and 4 pm was included as
+the independent variable. The equation also includes construction site
+fixed effects denoted as <span class="math inline">\(S_s\)</span> and
+time fixed effects denoted as <span class="math inline">\(DMY_t\)</span>
+(day of the week, month, and year). The weather variables, <span class="math inline">\(f(Temp_{st}, Wind_{st}, Hum_{st})\)</span>,
+represents temperature, wind speed, and humidity levels, respectively,
 along with the squared weather measurements obtained from the closest
-monitoring station. The idiosyncratic error term is denoted as <span class="math inline">\(\epsilon_{st}\)</span>, and standard errors are
-clustered based on the construction site.</p>
-<p>The purpose of this model is to address several challenges in
+monitoring station. The idiosyncratic error term is denoted <span class="math inline">\(\epsilon_{st}\)</span>, and standard errors are
+clustered in the construction site level.</p>
+<p>The objective of this model is to address several challenges in
 establishing a causal relationship between pollution levels and the
 likelihood of a construction accident. The first challenge is the
 potential endogeneity of pollution levels due to their correlation with
 environmental factors such as temperature, wind, and humidity. To
 mitigate this issue, the model includes flexible controls for weather
 variables in the regression function.</p>
-<p>The second challenge involves endogeneity associated with specific
-permanent attributes of each construction site. If pollution levels vary
-among contractors with different safety standards or if less experienced
-workers are more likely to work in regions with higher pollution levels,
-endogeneity concerns arise. To account for this, the model incorporates
-construction site fixed effects, allowing for an examination of
-within-construction site variations in pollution levels and accident
-probabilities.</p>
-<p>Measurement error is another potential concern in the literature on
-air pollution impacts. When monitoring station density or measurement
-frequency is low, the risk of biased results due to measurement error
-increases. To address this issue, the analysis takes advantage of a
-large number of monitoring stations spread across the country. The
-observations are limited to construction sites with a monitoring station
-within a 1 km radius. Additionally, pollution levels during working
-hours (8 am to 4 pm) are utilized since readings are available for three
-different intervals per day.</p>
+<p>The second challenge also involves endogeneity which might be
+associated with specific permanent attributes of each construction site.
+If pollution levels varies among contractors with different safety
+standards or if less experienced workers are more likely to work in
+regions with higher pollution levels, endogeneity arises. To account for
+this, the model incorporates construction site fixed effects, allowing
+for an examination of within-construction site variations in pollution
+levels and accident probabilities.</p>
+<p>Measurement error is another potential concern in consideration of
+the impact of air pollution. When the density of monitoring stations or
+the frequency of measurements is low, the risk of biased results due to
+measurement error increases. To address this issue, the analysis takes
+advantage of a large number of monitoring stations spread across the
+country. The observations are limited to construction sites with a
+monitoring station within a 1 km radius. Additionally, pollution levels
+during working hours (8 am to 4 pm) are used since readings are
+available for three different intervals per day (the others are midnight
+to 8 am, and 4 pm to midnight).</p>
 <p>A major concern is that high pollution levels may originate from the
 construction site itself on busy or specific days when the accident
 likelihood is higher. To address this concern, the analysis employs two
@@ -2536,7 +2533,7 @@ station during the preceding night are used as an instrument. This
 instrument assumes that pollution levels measured the night before only
 influence the probability of a construction accident during working
 hours on the same day through pollution levels measured during those
-working hours. It is also assumed that pollution generated by the site
+working hours. It is also assumes that pollution generated by the site
 itself cannot affect pollution levels measured the previous night when
 the site is largely inactive.</p>
 <p>Formally, the instrumental variable model is represented by the
@@ -2552,15 +2549,16 @@ Hum_{st})+S_s+DMY_t+\mu_{st}
 <p>Second Stage: <span class="math display">\[
   Y_{st} = \alpha + \beta Pred(NO_2)+f(Temp_{st}, Wind_{st},
 Hum_{st})+S_s+DMY_t+\epsilon_{st}
-\]</span> The paper also explores a non-linear model. Considering that
+\]</span></p>
+<p>The paper also incorporates a non-linear model. Considering that
 international organizations and governments establish standards and
 guidelines concerning exposure to elevated air pollution levels, the
-non-linear model investigates the impact of high pollution levels as
-follows:</p>
-<p><span class="math display">\[
+non-linear model examines the impact of high pollution levels in the
+following way: <span class="math display">\[
   Y_{st} = \alpha + \beta ModerateNO_2+\gamma HighNO_{2st}+f(Temp_{st},
 Wind_{st}, Hum_{st})+S_s+DMY_t+\epsilon_{st},
-\]</span> In this model, the continuous measure of air pollution in the
+\]</span></p>
+<p>In this model, the continuous measure of air pollution in the
 previous models is replaced with dummy variables for clean, moderately
 polluted, and highly polluted days. Moderately polluted days are defined
 as days when <span class="math inline">\(NO_2\)</span> levels are higher
@@ -2574,7 +2572,7 @@ percentile in the sample.</p>
 <div id="replicating-main-analysis-table" class="section level3">
 <h3>2.3.2 Replicating Main Analysis Table:</h3>
 <p>Before replicating the main table results (Table 2), the next chunk
-creates variables which are important for the analysis and the
+creates variables that are important for the analysis and the
 extension.</p>
 <pre class="r"><code>data &lt;- read_dta(&quot;/Users/omry/Documents/GitHub/Heads-Up--Does-Air-Pollution-Cause-Workplace-Accidents/Data/Final/Pollution and Accidents - Final for R.dta&quot;)
 
@@ -2634,7 +2632,7 @@ dict &lt;- setFixest_dict(c(acc = &quot;Accident&quot;, no2_16 = &quot;Nitrogen 
                                            &quot;factor(no2_16_crit)3&quot; = &quot;Unhealthy&quot;,
                                            &quot;factor(no2_16_crit)2&quot; = &quot;Moderate&quot;))
 # Setting up a fixest dictionary for variables</code></pre>
-<p>Now, replicating the main analysis table:</p>
+<p>Now, let’s replicate the main analysis table:</p>
 <pre class="r"><code># Regression models
 # Table 2
 # Model 1
@@ -3078,30 +3076,27 @@ Observations
 </tr>
 </tbody>
 </table>
-<p>In this table, we can see regression results of the above
-equations.The dependent variable, in all columns, is the probability of
-an accident occurring at the construction site. The coefficient stated
-belongs to the independent variable, which is the rate of <span class="math inline">\(NO_2\)</span> between 8 am and 16 pm. The first
-column is the basic regression without controls. The second includes all
-controls stated. The third column is the results of the first
-instrumental variable analysis, where the instrument is the simple
-average of the <span class="math inline">\(NO_2\)</span> rates in the
-<span class="math inline">\(5-10\)</span> km radius from each
-construction site between 8 am and 16 pm. The forth column is the
-analysis with the second instrument, which is the rate between midnight
-and 8 am in the closest monitor with a <span class="math inline">\(NO_2\)</span> reading within a <span class="math inline">\(1\)</span> km from the site. The fifth column
-specifies the result of the non-linear model, where the levels are the
-<span class="math inline">\(NO_2\)</span> AQI moderate and unhealthy for
-sensitive group rates (<span class="math inline">\(53\)</span> and <span class="math inline">\(100\)</span> <span class="math inline">\(ppb\)</span>, respectively). All standard errors
-are robust, adjusted for clusters by sites, and appear in
+<p>This table displays the regression results of the equations mentioned
+above. The dependent variable in all columns is the probability of an
+accident occurring at the construction site. The coefficient provided
+belongs to the independent variable, which is the rate of <span class="math inline">\(NO_2\)</span> between 8 am and 4 pm. The first
+column represents the basic regression without controls. The second
+column includes all the controls mentioned. The third column shows the
+results of the first instrumental variable analysis, where the
+instrument is the simple average of the <span class="math inline">\(NO_2\)</span> rates in the 5-10 km radius from
+each construction site between 8 am and 4 pm. The fourth column
+represents the analysis with the second instrument, which is the rate
+between midnight and 8 am in the closest monitor with a <span class="math inline">\(NO_2\)</span> reading within a 1 km radius from
+the site. The fifth column specifies the results of the non-linear
+model, where the levels are the <span class="math inline">\(NO_2\)</span> AQI moderate and unhealthy for
+sensitive group rates (53 and 100 ppb, respectively). All standard
+errors are robust, adjusted for clusters by sites, and appear in
 parentheses.</p>
 <p>The coefficients obtained for the <span class="math inline">\(NO_2\)</span> variable in the regression models
 indicate a statistically significant effect on the probability of
-workplace accidents. Although the coefficient values may seem small,
-they still hold important implications. The small coefficient suggests
-that for a 10-unit increase in the NO2 rate between 8 am and 4 pm, the
-probability of a workplace accident increases by 20-25% percentage,
-consider the baseline or average probability of an accident in the
+workplace accidents. A 10-unit increase in the NO2 rate between 8 am and
+4 pm, the probability of a workplace accident increases by 20-25%,
+considering the baseline or average probability of an accident in the
 sample.</p>
 <pre class="r"><code>mean(data$acc)</code></pre>
 <pre><code>## [1] 0.0001292755</code></pre>
@@ -3109,15 +3104,15 @@ sample.</p>
 </div>
 <div id="ml-extension-double-lasso" class="section level1">
 <h1>3. ML Extension – Double Lasso:</h1>
-<p>The double lasso procedure was performed to select relevant variables
-for the analysis. The pool from which the lasso selects variables
-include current time pollutants and weather variables, as well as lagged
-measures of those variables.</p>
-<p>The first step I take is to demean the variables, in the construction
-site level, which in practice means subtracting the site-specific means
-from the original values. This process ensures that the site fixed
-effects are considered, and thus shifts the lasso procedure to
-concentrate on the within-site variation.</p>
+<p>In the next chapter I preform a double lasso procedure in order to
+select relevant variables for the analysis. The pool from which the
+lasso selects variables includes current-time pollutants and weather
+variables, as well as lagged measures of those variables.</p>
+<p>The first step I take here is to demean the variables at the
+construction site level, which, in practice, means subtracting the
+site-specific means from the original values. This process ensures that
+the site fixed effects are considered and thus shifts the lasso
+procedure to concentrate on the within-site variation.</p>
 <pre class="r"><code># Demeaning the values, taking into account the site fixed effects:
 data_dm &lt;- demean(
   X = data %&gt;%
@@ -3183,11 +3178,14 @@ d &lt;- data_dm$no2_16
 x &lt;- data_dm %&gt;% 
   select(-acc, -no2_16) %&gt;%
   as.matrix()</code></pre>
-<p>Once the variables are demeaned, the double lasso procedure is
-performed. The lasso is applied with various environmental variables and
-their lagged values included in the selection process. This approach is
-particularly interesting as it aims to identify the transient effects of
-one pollutant while accounting also for their co-determinants.</p>
+<p>Once the variables are demeaned, I perform the double lasso
+procedure. The lasso was applied with various environmental variables
+and their lagged values included in the selection process. This approach
+is particularly interesting as it aims to identify the transient effects
+of one pollutant while also accounting for their co-determinants. I take
+both approached we learned in class in order to potentially also compare
+their results with each other within the framework of the double
+lasso.</p>
 <pre class="r"><code>partialling_out &lt;- rlassoEffect(x, y, d, method = &quot;partialling out&quot;)
 summary(partialling_out)</code></pre>
 <pre><code>## [1] &quot;Estimates and significance testing of the effect of target variables&quot;
@@ -3248,19 +3246,18 @@ and a decrease in the double selection. Notably, the temperature base
 level and squared humidity variables were not included in the regression
 this time. On the other hand, all the time fixed effects were chosen, as
 expected, due to the seasonality in accident rates and pollution levels
-throughout the year, and weekday.</p>
-<p>The selected variables, including current time pollutants and lagged
+throughout the year and weekdays.</p>
+<p>The selected variables, including current-time pollutants and lagged
 versions, indicate that the relevance and importance of these pollutants
 extend beyond their current values. This finding aligns with the
 literature discussing the co-determination of different variables both
 with each other and across time and space.</p>
-<p>It is important to note that the double lasso procedure creates a
+<p>It is important to note that the double lasso procedure creates
 competition among pollutants to be included in the regression.
-Traditional econometrics considers this as a complementary analysis, and
-in some instances avoids it (horse race). The similarity in results
-provides some validation and supports the overall robustness of the
-reported findings.</p>
-<p>In summary, the double lasso procedure in this case compliments the
+Traditional econometrics considers this as a complementary analysis and,
+in some instances, avoids it (horse race). The similarity in results
+provides some validation and supports the overall robustness.</p>
+<p>In summary, the double lasso procedure in this case complements the
 analysis by selecting relevant controls that were not initially
 considered. The results reinforce the importance of pollutants, both
 current and lagged, in explaining the variations in accident rates. The
@@ -3273,14 +3270,9 @@ machine learning to predict construction accidents based on
 environmental variables. I begin by evenly splitting the data into
 training and testing sets, with equal representation of accidents and
 non-accidents in both sets. I exclude site and year fixed effects from
-the model as my goal is to predict accidents based on environmental
-factors. However,I choose to include month and day of the week dummies
-to account for seasonality.</p>
-<p>The methodology used in this analysis is a Ridge regularized
-regression, which applies an L2 penalty to the variables. First, I
-preprocess the data by creating dummy variables for the “dayofweek” and
-“month” variables. This allows us to represent these categorical
-variables in a suitable format for my analysis.</p>
+the model as my goal was to predict accidents based on environmental
+factors. However, I include month and day of the week dummies to account
+for seasonality.</p>
 <pre class="r"><code>data &lt;- data %&gt;%
     dummy_cols(select_columns = c(&quot;dayofweek&quot;, &quot;month&quot;))
 
@@ -3289,10 +3281,28 @@ split &lt;- data %&gt;%
 
 train &lt;- training(split)
 test &lt;- testing(split)</code></pre>
-<p>Next, I divide the data into different time intervals: real time,
-morning time, the night before, and the workday before. For each time
-interval, I separate the dependent variable (accident) and the
-covariates:</p>
+<p>The methodology used in this analysis is a Ridge regularized
+regression, which applies an L2 penalty to the variables. This
+prediction method offers several advantages over the previous
+non-parametric analysis solely based on <span class="math inline">\(NO_2\)</span> levels. Firstly, it allows for the
+incorporation of multiple factors, including other environmental
+variables and temporal patterns, which can improve the accuracy of
+predictions. By considering a wider range of variables, the model can
+capture the complex interactions and dependencies that contribute to
+construction accidents. Secondly, the use of a regularized regression
+technique, such as Ridge regression, helps mitigate the risk of
+over-fitting and provides a more robust and interpretative model.</p>
+<p>The L2 penalty which stands in the base of the model encourages the
+procedure to find a balance between capturing the relevant information
+from the predictors while avoiding excessive reliance on noise or
+outliers in the particular dataset. Lastly, the division of data into
+different time intervals allows for a more nuanced understanding of
+predictability of accident at different hours before-hand, enabling
+better resource allocation and safety protocol planning.</p>
+<p>In my next step, I divided the data into different time intervals:
+real time, morning time, the night before, and the workday before. For
+each time interval, I separated the dependent variable (accident) and
+the covariates.</p>
 <pre class="r"><code>train_real_time &lt;- train %&gt;%
     select(
       acc, no2_16, co_16, o3_16,
@@ -3364,24 +3374,23 @@ test_workday_before &lt;- test %&gt;%
       starts_with(&quot;month_&quot;),
       starts_with(&quot;dayofweek_&quot;)
   )</code></pre>
-<p>In the original paper, we use a non-parametric analysis of
-construction accidents was conducted solely based on <span class="math inline">\(NO_2\)</span> levels. There, we suggested that the
-level of subsidy the state could offer a contractor to close a site for
-a day due to high pollution levels. However, this cost-benefit analysis
-had some limitations.</p>
+<p>In the original paper, a non-parametric analysis of construction
+accidents was conducted solely based on <span class="math inline">\(NO_2\)</span> levels. There, it was suggested that
+the level of subsidy the state could offer a contractor to close a site
+for a day due to high pollution levels. However, this cost-benefit
+analysis had some limitations.</p>
 <p>First, it focused only on <span class="math inline">\(NO_2\)</span>
 without incorporating other factors, which might not yield the best
 predictions. Additionally, the analysis used data from the working day
 itself, which didn’t allow for worker optimization in a site that
-closes.</p>
-<p>By using the prediction method, we now can compare the predictability
-of the model with actual day data and three time intervals before. If
-these models exhibit comparable performance and can accurately predict
-accidents, it could be a cost-effective method for closing sites on
-those days since contractors can prepare in advance and reallocate
-workers between sites.</p>
-<p>Next, I arrange the covariates and the dependent variable matrices
-for each time interval:</p>
+closes. By using the prediction method, we can now compare the
+predictability of the model with actual day data and three time
+intervals before. If these models exhibit comparable performance and can
+accurately predict accidents, it could be a cost-effective method for
+closing sites on those days since contractors can prepare in advance and
+reallocate workers between sites.</p>
+<p>Next, I arranged the covariates and the dependent variable matrices
+for each time interval.</p>
 <pre class="r"><code>covariates_real_time &lt;- train_real_time %&gt;% 
   select(
     -acc
@@ -3429,7 +3438,7 @@ dependent_workday_before &lt;- train_workday_before %&gt;%
     acc
   ) %&gt;%
   as.matrix()</code></pre>
-<p>Then I fit the ridge regression models:</p>
+<p>Then I fitted the ridge regression models.</p>
 <pre class="r"><code>fit_ridge_real_time &lt;- glmnet(
    x = covariates_real_time,
    y = dependent_real_time,
@@ -3454,13 +3463,13 @@ fit_ridge_workday_before &lt;- glmnet(
    alpha = 0
  )</code></pre>
 <p>Next, I perform cross-validation on the ridge regression models for
-each time interval:</p>
+each time interval.</p>
 <pre class="r"><code>cv_ridge_real_time &lt;- cv.glmnet(x = covariates_real_time, y = dependent_real_time)
 cv_ridge_morning_time &lt;- cv.glmnet(x = covariates_morning_time, y = dependent_morning_time)
 cv_ridge_night_before &lt;- cv.glmnet(x = covariates_night_before, y = dependent_night_before)
 cv_ridge_workday_before &lt;- cv.glmnet(x = covariates_workday_before, y = dependent_workday_before)</code></pre>
-<p>Next I examine the selected coefficients from the ridge regression
-models for each time interval:</p>
+<p>Next, I examine the selected coefficients from the ridge regression
+models for each time interval.</p>
 <pre class="r"><code>ridge_real_time &lt;- coef(cv_ridge_real_time, s = &quot;lambda.min&quot;)
 ridge_real_time</code></pre>
 <pre><code>## 29 x 1 sparse Matrix of class &quot;dgCMatrix&quot;
@@ -3616,24 +3625,23 @@ covariates_workday_before_test &lt;- test_workday_before %&gt;%
     -acc
   ) %&gt;%
   as.matrix()</code></pre>
-<p>The four following chunks predicts accidents based on the ridge
-models and creates a confusion matrix for each one. Since construction
-accidents are a rare occurrence, we need to set accordingly the rule for
-which we decide the rule deciding the model predicts there exist a high
-chance for an accident. I decided here to put the threshold both as one
-and a half, and twice the average probability of an accident, saying if
-the model predicts a higher probability than those values for a
-construction accident, it classifies its prediction as prediction of an
-accident.</p>
-<p>As we will see in the following results, we need to figure out the
-ideal, and acceptable, number of times of a site closure. If we decide
-to close all sites year-round, we will avoid all accidents, but what is
-the ideal number of sites closure to accidents avoidance? That’s an
-important question which requires extensive discussions in the public
-policy sphere. I will try to supply comparison between rules and days of
-closure. We will see that as we go further in time, the prediction
-itself will be less accurate but also less costly in terms of days of
-closure.</p>
+<p>The following four sections predict accidents based on the ridge
+models and create a confusion matrix for each one. Since construction
+accidents are a rare occurrence (considering the number of days in a
+construction site), we need to set the threshold for deciding when the
+model predicts a high chance of an accident. Here, I decided to set the
+threshold as one and a half, and twice the average probability of an
+accident in the sample, thus classifying predictions higher than those
+values as predictions of an accident.</p>
+<p>As we will see in the following results, in order to use these model,
+we will need to figure out the ideal and acceptable number of times a
+site should be closed. If we decide to close all sites year-round, we
+will for sure avoid all accidents, but what is the ideal number of site
+closures to avoid accidents? That’s an important question that requires
+extensive discussions in the public policy sphere. I will try to compare
+rules and days of closure. We will see that as we go further in time,
+the prediction itself will be less accurate but also less costly in
+terms of days of closure.</p>
 <pre class="r"><code># Set the rule for classifying predictions
 rule1.5 &lt;- mean(data$acc) * 1.5
 rule2 &lt;- mean(data$acc) * 2
@@ -3685,13 +3693,13 @@ ridge_conf_mat_decision_real_time1.5</code></pre>
 ##          0 1044631     129
 ##          1   49781      21</code></pre>
 <p>We can see here that with the 1.5 rule and the 2 rule, we can avoid
-in real time 19.3% and 14% of the accidents respectively. But this
-requires immediate closure of each site for 16.1 and 5.9 times a year on
-average (134,840 and 49,802 site closures in the test sample only
-respectively – 3 years sample of 5,583), which doesn’t allow
-labor-reallocation and will likely require government subsidy, which
-would not cut-even on average (with respect to the government expenses
-on accidents), as seen in the original paper.</p>
+19.3% and 14% of the accidents in real time, respectively. But this
+requires immediate closure of each site for an average of 16.1 and 5.9
+times a year (134,840 and 49,802 site closures in the test sample alone,
+respectively - 3 years sample of 5,583). This doesn’t allow for labor
+reallocation and will likely require government subsidy, which would not
+break even on average (with respect to the government expenses on
+accidents), as seen in the original paper.</p>
 <pre class="r"><code>ridge_pred_morning_time &lt;- predict(
   object = cv_ridge_morning_time,
   newx = covariates_morning_time_test,
@@ -3739,12 +3747,12 @@ ridge_conf_mat_decision_morning_time1.5</code></pre>
 ##          0 1039963     129
 ##          1   54449      21</code></pre>
 <p>We can see here that with the 1.5 rule and the 2 rule, we can avoid
-with the morning data 25.3% and 14% of the accidents respectively. This
-isn’t a great fall-off in numbers of accidents from the real time data,
-and can allow for some labor re-allocation. In terms of closure of
-sites, we are talking of about 18.6 and 6.5 times a year on average
-(155,943 and 54,449 site closures in the test sample alone respectively
-– 3 years sample of 5,583).</p>
+25.3% and 14% of the accidents with the morning data, respectively. This
+isn’t a significant decrease in the number of accidents compared to the
+real-time data and can allow for some labor reallocation. In terms of
+site closures, we are talking about an average of 18.6 and 6.5 times a
+year (155,943 and 54,449 site closures in the test sample alone,
+respectively - 3 years sample of 5,583).</p>
 <pre class="r"><code>ridge_pred_night_before &lt;- predict(
   object = cv_ridge_night_before,
   newx = covariates_night_before_test,
@@ -3791,12 +3799,12 @@ ridge_conf_mat_decision_night_before1.5</code></pre>
 ##          0 1066198     137
 ##          1   28213      13</code></pre>
 <p>We can see here that with the 1.5 rule and the 2 rule, we can avoid
-in with the night before data 28% and 8.7% of the accidents
-respectively. These are great numbers of accidents that we can avoid,
-and which can absolutely allow for labor re-allocation. In terms of
-closure of sites, we are talking of about 17.6 and 3.4 times a year on
-average (147,077 and 28,213 site closures in the test sample alone
-respectively – 3 years sample of 5,583).</p>
+28% and 8.7% of the accidents with the night before data, respectively.
+These are significant numbers of accidents that we can avoid, and which
+can absolutely allow for labor reallocation. In terms of site closures,
+we are talking about an average of 17.6 and 3.4 times a year (147,077
+and 28,213 site closures in the test sample alone, respectively - 3
+years sample of 5,583).</p>
 <pre class="r"><code>ridge_pred_workday_before &lt;- predict(
   object = cv_ridge_workday_before,
   newx = covariates_workday_before_test,
@@ -3842,16 +3850,15 @@ ridge_conf_mat_decision_workday_before1.5</code></pre>
 ## Prediction       0       1
 ##          0 1080751     146
 ##          1   13660       4</code></pre>
-<p>In this last model, contracters have a full day in advance to
+<p>In this last model, contractors have a full day in advance to
 prepare. We can see here that with the 1.5 rule and the 2 rule, it is
-possible to avoid with the night before data: 20% and 2.7% of the
-accidents respectively. These are still great numbers of accidents that
-can be avoided, and which can allow for labor re-allocation. In terms of
-closure of sites, we are talking of about 16.4 and 1.6 times a year on
-average (137,706 and 13,660 site closures in the test sample alone
-respectively – 3 years sample of 5,583). These numbers are subjectively
-high and low, and should be taken all together into account in public
-policy.</p>
+possible to avoid 20% and 2.7% of the accidents with the night before
+data, respectively. These are still significant numbers of accidents
+that can be avoided, and which can allow for labor reallocation. In
+terms of site closures, we are talking about an average of 16.4 and 1.6
+times a year (137,706 and 13,660 site closures in the test sample alone,
+respectively - 3 years sample of 5,583). These numbers are subjectively
+high and low and should all be taken into account in public policy.</p>
 <pre class="r"><code># 2 Times the Average Accidents Rate:
 data.frame(
   Time_Interval = c(&quot;Real Time&quot;, &quot;Morning Time&quot;, &quot;Night Before&quot;, &quot;Workday Before&quot;),
@@ -3877,45 +3884,45 @@ data.frame(
 <p>Overall, the performance of the models varies across the different
 time intervals, highlighting the importance of considering temporal
 factors when predicting construction accidents. Although this is the
-case, the relatively good prediction of construction accidents show that
-it is possible to avoid accidents by relying on environmental factors is
-possible on a certain level. Generally, it appears that the real-time
-and morning time models perform slightly better than the night before
-and workday before models. This can be of great implications as this
-offers a cost-efficient solution of better labor allocation in days with
-high probability to accidents.</p>
+case, the relatively good prediction of construction accidents shows
+that avoiding accidents by relying on environmental factors is possible
+to a certain extent. Generally, it appears that the real-time and
+morning time models perform slightly better than the night before and
+workday before models. This can have great implications as it offers a
+cost-efficient solution for better labor allocation on days with a high
+probability of accidents.</p>
 </div>
 </div>
 <div id="conclusions" class="section level1">
-<h1>5. Conclusions:</h1>
-<p>In conclusion, this project aimed to extend and compliment the
+<h1>5. Conclusions</h1>
+<p>In conclusion, this project aimed to extend and complement the
 analysis presented in the paper “Heads Up: Does Pollution Cause
 Construction Accidents?” by Victor Lavy, Genia Rachkovsky, and myself.
 By leveraging machine learning methodologies, I delved deeper into the
 relationship between pollution and construction accidents, focusing on
 Nitrogen Dioxide (<span class="math inline">\(NO_2\)</span>) as the
 primary pollutant of interest.</p>
-<p>Throughout the project, I followed a systematic approach. I first
-replicated the data used in the original study, and conducted the
-original basic econometric analysis. The regression results consistently
-indicated a statistically significant effect of <span class="math inline">\(NO_2\)</span> on the probability of construction
-accidents, highlighting the importance of addressing pollution in
-workplace safety protocols.</p>
+<p>Throughout the project, I first replicated the data used in the
+original study and conducted the original basic econometric analysis.
+The regression results consistently indicated a statistically
+significant effect of <span class="math inline">\(NO_2\)</span> on the
+probability of construction accidents, highlighting the importance of
+addressing pollution in workplace safety protocols.</p>
 <p>To further support and extend the analysis, I employed machine
-learning techniques from the course “Machine Learning for Economists”.
-The double lasso methodology allowed me to select relevant variables,
-including both current and lagged pollutants, which reinforced the
-importance of considering the transient effects of pollutants.
+learning techniques from the course. The double lasso methodology
+validated the robustness of the original results while also showcasing
+the importance of considering the transient effects of pollutants.
 Additionally, I developed prediction models using Ridge regularized
 regression, aiming to assess the likelihood of construction accidents
-based on various environmental factors available. The models showed
-promise in accurately predicting accidents, providing insights for
-effective safety management and resource allocation.</p>
-<p>In summary, the findings of this project can potentialy contribute to
-better public-policy planning and understanding of the relationship
-between environmental factor and construction accidents. The project’s
+based on different time-interval of environmental variables available in
+the data. The models showed promise in accurately predicting accidents,
+providing insights for potentially improvement of safety management
+while allowing for labor re-allocation in the process.</p>
+<p>In summary, the findings of this project can potentially contribute
+to better public policy planning and understanding of the relationship
+between environmental factors and construction accidents. The project’s
 combination of traditional econometric methods and machine learning
-approaches provided, in my eyes, a comprehensive analysis, validating
+approaches provided, in my opinion, a comprehensive analysis, validating
 the original results and offering additional insights. Policymakers can
 potentially utilize these findings to improve workplace safety measures,
 implement pollution control strategies, and aim to allocate labor more
